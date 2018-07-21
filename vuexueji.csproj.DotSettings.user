@@ -1,0 +1,9 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=CLASSTIME_005CADD/@EntryIndexedValue">Classtime\Add</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=EXAMS_005CINDEX/@EntryIndexedValue">Exams\Index</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=ROLLCALL/@EntryIndexedValue">Rollcall</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/MappedPaths/=CLASSTIME_005CEDIT/@EntryIndexedValue"></s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=CLASSTIME_005CADD/@EntryIndexedValue">Classtime\Add</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=CLASSTIME_005CEDIT/@EntryIndexedValue">Classtime\Edit</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=EXAMS_005CINDEX/@EntryIndexedValue">Exams\Index</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=ROLLCALL/@EntryIndexedValue">Rollcall</s:String></wpf:ResourceDictionary>

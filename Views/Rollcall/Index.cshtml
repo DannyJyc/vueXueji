@@ -1,0 +1,52 @@
+﻿<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<style>
+    div #ct {
+        width: 200px;
+        height: 200px;
+        margin-top: 20px;
+        margin-left: 20px;
+        border: 1px solid black;
+    }
+</style>
+<div id="app">
+    <div v-for="(n,index) in leList">
+        <a href="#" v-on:click="jump(n.Id)">{{n.ClassesName}}&nbsp;{{n.CoursesName}}</a>
+        <p>{{n.WeekStart}}-{{n.WeekEnd}}</p>
+        <p>{{n.WeekDays}}~{{n.LessonsOrder}}</p>
+    </div>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            leList: []
+        },
+        mounted() {
+            this.getAll();
+        },
+        methods: {
+            getAll: function () {
+                axios.get('@Url.Action("Get", "Rollcall")'
+                ).then(
+                    (response) => {
+                        this.leList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.leList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            jump: function (id) {
+                window.location.href ='/Rollcall/Addrollcall/'+id;
+            }
+        }
+
+    });
+
+</script>

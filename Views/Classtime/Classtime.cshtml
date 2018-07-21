@@ -1,0 +1,61 @@
+﻿<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<style>
+    div #ct{
+        margin-left: 20px;
+        margin-top: 20px;
+        width: 200px;
+        height: 250px;
+        border: 1px solid blue;
+    }
+</style>
+<div id="app">
+    <div id="ct" v-for="(classtime,index) in classtimeList">
+        <h1>{{classtime.WeekDays}}~{{classtime.LessonsOrder}}</h1>
+        <h3>{{classtime.ClassesName}}</h3>
+        <h2>{{classtime.CoursesName}}{{classtime.LectureresName}}</h2>
+        <p>{{classtime.ClassroomName}}</p>
+        <p>{{classtime.WeekStart}}-{{classtime.WeekEnd}}周</p>
+
+        <a href="#" v-on:click="jump(classtime.Id)">添加考试</a>
+        <a href="#" v-on:click="jumplook(classtime.Id)">查询考试</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            classtimeList: []
+        },
+        mounted() {
+            this.getclasstime();
+        },
+        methods: {
+            getclasstime: function () {
+                axios.get('@Url.Action("Get", "Classtime")'
+                ).then(
+                    (response) => {
+                        this.classtimeList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classtimeList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            jump: function (id) {
+                window.location.href = '/Exams/Index/' + id;
+            },
+            jumplook: function (id) {
+                window.location.href = '/Exams/List/' + id;
+            }
+        }
+
+    });
+
+</script>

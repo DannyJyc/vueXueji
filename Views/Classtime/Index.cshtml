@@ -1,0 +1,56 @@
+﻿<link href="~/Content/date.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/date.js"></script>
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<script>
+    $(function () {
+        $('#datestart').date({ theme: "datetime" });
+    });
+    $(function () {
+        $('#dateend').date({ theme: "datetime" });
+    });
+</script>
+<body>
+    <div id="app">
+        <label for="datestart">学期开始时间</label>
+        <input type="text" name="datestart" id="datestart"/><br />
+        <label for="dateend">学期结束时间</label>
+        <input type="text" name="dateend" id="dateend"/><br />
+        <div id="datePlugin"></div>
+        <a href="#" v-on:click="weekarranging()">确认</a>
+    </div>
+</body>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+
+        },
+        mounted() {
+        },
+        methods: {
+            weekarranging: function () {
+                var start = document.getElementById("datestart").value;
+                var end = document.getElementById("dateend").value;
+                axios.post('@Url.Action("AddWeek", "Classtime")', { DateStart: start, DateEnd: end }).then(
+                    (response) => {
+                        if (response.data == "1") {
+                            alert("添加成功");
+                        } else {
+                            alert("不满足正常课时范围(18周)\n" + start + "\t-\t" + end + "\n当前范围" + response.data+"周");
+                        }
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+
+    });
+
+</script>

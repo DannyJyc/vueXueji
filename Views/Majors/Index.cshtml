@@ -1,0 +1,114 @@
+﻿
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<div id="app">
+    <table v-show="majorsList.length" class="table-condensed" border="1">
+        <thead class="navbar-header">
+        <tr>
+            <th>姓名</th>
+            <th>操作</th>
+        </tr>
+        <tr v-for="(majors,index) in majorsList">
+            <td><input type="text" v-model="majors.Name" /></td>
+            <td>
+                <div v-if="majors.Id!=''">
+                    <a href="#" v-on:click="updatemajors(majors.Id,majors.Name)">修改</a>
+                    <a href="#" v-on:click="deletemajors(majors.Id)">删除</a>
+                </div>
+                <div v-else>
+                    <a href="#" v-on:click="addmajors(majors.Name)">添加</a>
+                </div>
+            </td>
+        </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            majorsList: []
+
+        },
+        mounted() {
+            this.getMajors();
+        },
+        methods: {
+            getMajors: function () {
+                axios.get('@Url.Action("Get", "Majors")'
+                ).then(
+                    (response) => {
+                        this.majorsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.majorsList.push(response.data[i]);
+                        }
+                        this.majorsList.push({Id:"",Name:"" });
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            addmajors: function (name) {
+                axios.post('@Url.Action("Add", "Majors")', { Name: name}).then(
+                    (response) => {
+                        this.majorsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.majorsList.push(response.data[i]);
+                        }
+                        this.majorsList.push({ Id: "", Name: "" });
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            updatemajors: function (id, name) {
+                axios.post('@Url.Action("Edit", "Majors")', { Id:id, Name: name}).then(
+                    (response) => {
+                        this.majorsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.majorsList.push(response.data[i]);
+                        }
+                        this.majorsList.push({ Id: "", Name: "" });
+                        alert("修改成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            deletemajors: function (id) {
+                axios.post('@Url.Action("Del", "Majors")', { id: id }).then(
+                    (response) => {
+                        this.majorsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.majorsList.push(response.data[i]);
+                        }
+                        this.majorsList.push({ Id: "", Name: "" });
+                        alert("删除成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+
+    });
+
+</script>

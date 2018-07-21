@@ -1,0 +1,19 @@
+﻿<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<table border="1">
+    <tr>
+        <th>考试名称</th>
+        <th>考试时间</th>
+    </tr>
+    @foreach (var i in ViewBag.list)
+    {
+        <tr>
+            <td><a href="/Exams/Score/@i.Id">@i.Name</a></td>
+            <td>@i.TimeStamp</td>
+        </tr>
+    }
+
+</table>

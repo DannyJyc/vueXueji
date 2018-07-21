@@ -1,0 +1,129 @@
+﻿<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+
+<div id="app">
+    <div v-for="(classtime,index) in classtimeList">
+        class:
+        <select v-model="classtime.ClassesId">
+            <option v-for="classes in classesList" v-bind:value="classes.Id">{{classes.ClassName}}</option>
+        </select><br />
+        courses:
+        <select v-model="classtime.CoursesId">
+            <option v-for="courses in coursesList" v-bind:value="courses.Id">{{courses.Name}}{{courses.LecturerName}}</option>
+        </select><br />
+        session:
+        <select v-model="classtime.WeekArrangingId">
+            <option v-for="weekarranging in weekarrangingList" v-bind:value="weekarranging.Id">{{weekarranging.Years}}{{weekarranging.Session}}</option>
+        </select><br />
+        classroom:
+        <select v-model="classtime.ClassroomId">
+            <option v-for="classroom in classroomList" v-bind:value="classroom.Id">{{classroom.Name}}</option>
+        </select><br />
+        week:<input type="text" v-model="classtime.WeekDays" />LessonsOrder:<input type="text" v-model="classtime.LessonsOrder" /><br />
+        <input type="text" v-model="classtime.WeekStart" />-<input type="text" v-model="classtime.WeekEnd" />周
+    </div>
+</div>
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            classtimeList: [],
+            classesList: [],
+            coursesList: [],
+            weekarrangingList: [],
+            classroomList:[]
+        },
+        mounted() {
+            this.getclasstime(),
+                this.getAllclasses(),
+                this.getAllcourses(),
+                this.getAllweekarranging(),
+                this.getAllclassroom();
+        },
+        methods: {
+            getclasstime: function () {
+                axios.get('@Url.Action("Get", "Classtime")'
+                ).then(
+                    (response) => {
+                        this.classtimeList = response.data;
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classtimeList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllclasses: function () {
+                axios.get('@Url.Action("Get", "Classes")'
+                ).then(
+                    (response) => {
+                        this.classesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classesList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllcourses:function () {
+                axios.get('@Url.Action("Get", "Courses")'
+                ).then(
+                    (response) => {
+                        this.coursesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.coursesList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllweekarranging:function () {
+                axios.get('@Url.Action("WeekArranging", "Classtime")'
+                ).then(
+                    (response) => {
+                        this.weekarrangingList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.weekarrangingList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllclassroom:function () {
+                axios.get('@Url.Action("Classroom", "Classtime")'
+                ).then(
+                    (response) => {
+                        this.classroomList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classroomList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+
+    });
+
+</script>

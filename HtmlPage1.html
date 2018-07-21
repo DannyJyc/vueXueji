@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="Scripts/vue.js"></script>
+</head>
+<body>
+<label id="app">
+    <select v-model="selected" >
+        <option v-for="option in options" v-bind:value="option.value">
+            {{ option.text }}
+        </option>
+    </select>
+    <span>Selected: {{ selected }}</span>
+
+
+</label>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            selected: 'B',
+            options: [
+                { text: 'One', value: 'A' },
+                { text: 'Two', value: 'B' },
+                { text: 'Three', value: 'C' }
+            ]
+        }
+    })
+</script>
+</body>
+</html>

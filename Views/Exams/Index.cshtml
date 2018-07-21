@@ -1,0 +1,73 @@
+﻿<script src="~/Scripts/jquery-3.3.1.js"></script>
+<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<div id="app">
+    考试名称：
+    <input type="text" id="examsname" />
+    考试时间：
+    <input type="text" id="examstime" />
+    <table class="table-condensed" border="1">
+        <thead class="navbar-header">
+        <tr>
+            <th>姓名</th>
+            <th>操作</th>
+        </tr>
+        @{
+            var temp = 1;
+        }
+        @foreach (var i in ViewBag.students)
+        {
+            <tr>
+                <td>
+                    <input type="hidden" id="studentsname_@temp" value="@i.Id" />
+                    @i.Name
+                </td>
+                <td><input type="text" id="score_@temp" /></td>
+            </tr>
+            temp++;
+        }
+
+        </thead>
+    </table>
+    <button onclick="score()">add</button>
+</div>
+<script>
+    function score() {
+        var name = "";
+        var score = "";
+        var examsname = document.getElementById("examsname").value;
+        var examstime = document.getElementById("examstime").value;
+
+
+        for (var i = 1; i < @temp; i++) {
+            var scorees = document.getElementById("score_" + i).value;
+            var item = document.getElementById("studentsname_"+i).value;
+            if (i == 1) {
+                score += scorees;
+                name += item;
+            } else {
+                score += "," + scorees;
+                name += "," + item;
+            }
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '/Exams/Addexams',
+            data: { CoursesArrangingId:@ViewBag.id,Examsname:examsname,Examstime:examstime,StudentsId: name, Score: score },
+            success: function (data) {
+                if (data == "1") {
+                    alert("操作成功");
+                    window.location.href ='/Classtime/Classtime';
+
+                } else {
+                    alert("ero!");
+                }
+            }
+        });
+    }
+
+</script>

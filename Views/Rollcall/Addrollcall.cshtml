@@ -1,0 +1,81 @@
+﻿<script src="~/Scripts/jquery-3.3.1.js"></script>
+<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<div id="app">
+    <a href="/Rollcall/ListRollcall">查看历史</a>
+    <table class="table-condensed" border="1">
+        <thead class="navbar-header">
+        <tr>
+            <th>姓名</th>
+            <th>操作</th>
+        </tr>
+        @{
+            int temp = 1;
+        }
+        @foreach (var n in ViewBag.students)
+        {
+
+            <tr>
+                <td><input type="hidden" id="name_@temp" name="name" value="@n.Id"/>@n.Name</td>
+                <td>
+                    <input type="radio" id="status_@temp" name="status_@temp" value="1">
+                    <label>正常</label>
+                    &nbsp;
+                    <input type="radio" id="status_@temp" name="status_@temp" checked="checked" value="0">
+                    <label>未到</label><br/>
+                </td>
+            </tr>
+            temp++;
+        }
+
+        </thead>
+    </table>
+    <button onclick="studentss()">add</button>
+</div>
+<script>
+    function studentss() {
+        var name = "";
+        var status = "";
+
+       
+
+        for (var i = 1; i < @temp; i++) {
+            var statuses = document.getElementsByName("status_"+i);
+            var item = document.getElementById("name_"+i).value;
+            if (i == 1) {
+                for (n = 0; n < statuses.length; n++) {  
+                    if (statuses[n].checked) {
+                        status += statuses[n].value;
+                    }  
+                } 
+                name += item;
+            } else {
+                for (n = 0; n < statuses.length; n++) {
+                    if (statuses[n].checked) {
+                        status += "," + statuses[n].value;
+                    }
+                }
+                name += "," + item;   
+            }
+        }
+     
+        $.ajax({
+            type: 'post',
+            url: '/Rollcall/Addrollcall',
+            data: { StudentsId: name, State: status },
+            success: function (data) {
+                if (data == "1") {
+                    alert("操作成功");
+                    window.location.href ='/Rollcall/Addrollcall/'+id;
+
+                } else {
+                    alert("ero!");
+                }
+            }
+        });
+    }
+
+</script>

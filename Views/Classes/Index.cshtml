@@ -1,0 +1,165 @@
+﻿
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<div id="app">
+    <table v-show="classesList.length" class="table-condensed" border="1">
+        <thead class="navbar-header">
+            <tr>
+                <th>老师</th>
+                <th>年级</th>
+                <th>专业</th>
+                <th>操作</th>
+            </tr>
+            <tr v-for="(classes,index) in classesList">
+                <td>
+                    <select v-model="classes.TeacherId">
+                            <option v-for="teachers in teachersList" v-bind:value="teachers.Id">{{teachers.Name}}</option>
+                        </select>
+                </td>
+                <td type="text">
+                    <input type="text"  v-model="classes.Year" />
+                </td>
+                <td>
+                    <select v-model="classes.MajorsId">
+                            <option v-for="majors in majorsList" v-bind:value="majors.Id">{{majors.Name}}</option>
+                        </select>
+                </td>
+                <td>
+                    <div v-if="classes.Id!=''">
+                        <a href="#" v-on:click="updateclasses(classes.Id,classes.TeacherId,classes.MajorsId,classes.Year)">修改</a>
+                        <a href="#" v-on:click="deleteclassesId(classes.Id)">删除</a>
+                    </div>
+                    <div v-else>
+                        <a href="#" v-on:click="addclasses(classes.TeacherId,classes.MajorsId,classes.Year)">添加</a>
+                    </div>
+                </td>
+
+            </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            classesList: [],
+            teachersList: [],
+            majorsList:[]
+        },
+        mounted() {
+            this.getAllclasses(),
+                this.getTeachers(),
+                this.getMajors();
+        },
+        methods: {
+            getAllclasses: function () {
+                axios.get('@Url.Action("Get", "Classes")'
+                ).then(
+                    (response) => {
+                        this.classesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classesList.push(response.data[i]);
+                        }
+                        this.classesList.push({ Id:"",ClassName:"",MajorsId:"",TeacherId:"",Year:"",TeacherName:""});
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getTeachers: function () {
+                axios.get('@Url.Action("Get", "Teachers")'
+                ).then(
+                    (response) => {
+                        this.classesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.teachersList.push(response.data[i]);
+                        }
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getMajors: function () {
+                axios.get('@Url.Action("Get", "Majors")'
+                ).then(
+                    (response) => {
+                        this.majorsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.majorsList.push(response.data[i]);
+                        }
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            addclasses: function (teachersid,majorsid,year) {
+                axios.post('@Url.Action("Add", "Classes")', { Year: year, MajorsId: majorsid, TeacherId: teachersid }).then(
+                    (response) => {
+                        this.classesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classesList.push(response.data[i]);
+                        }
+                        this.classesList.push({ Id: "", ClassName: "", MajorsId: "", TeacherId: "", Year: "", TeacherName: "" });
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            updateclasses: function (id, teachersid, majorsid, year) {
+                axios.post('@Url.Action("Edit", "Classes")', { Id:id,Year: year, MajorsId: majorsid, TeacherId: teachersid  }).then(
+                    (response) => {
+                        this.classesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classesList.push(response.data[i]);
+                        }
+                        this.classesList.push({ Id: "", ClassName: "", MajorsId: "", TeacherId: "", Year: "", TeacherName: "" });
+                        alert("修改成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            deleteclassesId: function (id) {
+                axios.post('@Url.Action("Del", "Classes")', { id: id }).then(
+                    (response) => {
+                        this.classesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classesList.push(response.data[i]);
+                        }
+                        this.classesList.push({ Id: "", ClassName: "", MajorsId: "", TeacherId: "", Year: "", TeacherName: "" });
+                        alert("删除成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+    });
+
+</script>

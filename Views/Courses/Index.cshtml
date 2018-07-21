@@ -1,0 +1,137 @@
+﻿<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<div id="app">
+    <table v-show="coursesList.length" class="table-condensed" border="1">
+        <thead class="navbar-header">
+            <tr>
+                <th>课程名称</th>
+                <th>讲师</th>
+                <th>操作</th>
+            </tr>
+            <tr v-for="(courses,index) in coursesList">
+                <td><input type="text" v-model="courses.Name" /></td>
+                <td>
+                    <select v-model="courses.LecturerId">
+                        <option v-for="lecturer in lecturerList" v-bind:value="lecturer.Id">{{lecturer.Name}}</option>
+                    </select>
+                </td>
+                <td>
+                    <div v-if="courses.Id!=''">
+                        <a href="#" v-on:click="updatecourses(courses.Id,courses.Name,courses.LecturerId)">修改</a>
+                        <a href="#" v-on:click="deletecourses(courses.Id)">删除</a>
+                    </div>
+                    <div v-else>
+                        <a href="#" v-on:click="addcourses(courses.Name,courses.LecturerId)">添加</a>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            coursesList: [],
+            lecturerList:[]
+        },
+        mounted() {
+            this.getCourses(),
+                this.getLecturer();
+        },
+        methods: {
+            getCourses: function () {
+                axios.get('@Url.Action("Get", "Courses")'
+                ).then(
+                    (response) => {
+                        this.coursesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.coursesList.push(response.data[i]);
+                        }
+                        this.coursesList.push({Id:"",LecturerId:"",LecturerName:"",Name:""});
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getLecturer: function () {
+                axios.get('@Url.Action("Get", "Lecturers")'
+                ).then(
+                    (response) => {
+                        this.lecturerList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.lecturerList.push(response.data[i]);
+                        }
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            addcourses: function (name,lecturer) {
+                axios.post('@Url.Action("Add", "Courses")', { Name:name,LecturerId:lecturer}).then(
+                    (response) => {
+                        this.coursesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.coursesList.push(response.data[i]);
+                        }
+                        this.coursesList.push({ Id: "", LecturerId: "", LecturerName: "", Name: "" });
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            updatecourses: function (id, name, lecturer) {
+                axios.post('@Url.Action("Edit", "Courses")', { Id: id, Name: name, LecturerId: lecturer }).then(
+                    (response) => {
+                        this.coursesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.coursesList.push(response.data[i]);
+                        }
+                        this.coursesList.push({ Id: "", LecturerId: "", LecturerName: "", Name: "" });
+                        alert("修改成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            deletecourses: function (id) {
+                axios.post('@Url.Action("Del", "Courses")', { Id: id }).then(
+                    (response) => {
+                        this.coursesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.coursesList.push(response.data[i]);
+                        }
+                        this.coursesList.push({ Id: "", LecturerId: "", LecturerName: "", Name: "" });
+                        alert("删除成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+
+    });
+
+</script>

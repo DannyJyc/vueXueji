@@ -1,0 +1,21 @@
+﻿
+<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<table border="1">
+    <tr>
+        <th>时间</th>
+        <th>操作人</th>
+    </tr>
+
+@foreach (var i in ViewBag.rollcall)
+{
+    <tr>
+        <td><a href="/Rollcall/StudentsStatus/@i.Id">@i.CreateTime</a></td>
+        <td>@i.Name</td>
+    </tr>
+}
+
+</table>

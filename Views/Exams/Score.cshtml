@@ -1,0 +1,52 @@
+﻿<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<div id="app">
+    <table v-show="studentsList.length" class="table-condensed" border="1">
+        <thead class="navbar-header">
+            <tr>
+                <th>姓名</th>
+                <th>分数</th>
+            </tr>
+            <tr v-for="(students,index) in studentsList">
+                <td><input type="text" v-model="students.StudentsId" /></td>
+                <td><input type="text" v-model="students.Score" /></td>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            studentsList: []
+
+        },
+        mounted() {
+            this.getAllstudentss();
+        },
+        methods: {
+            getAllstudentss: function () {
+                axios.get('/Exams/StudentsJson/@ViewBag.id'
+                ).then(
+                    (response) => {
+                        this.studentsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.studentsList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+
+    });
+
+</script>

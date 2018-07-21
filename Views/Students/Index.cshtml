@@ -1,0 +1,162 @@
+﻿
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<div id="app">
+    <table v-show="studentsList.length" class="table-condensed" border="1">
+        <thead class="navbar-header">
+            <tr>
+                <th>姓名</th>
+                <th>学号</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>电话</th>
+                <th>QQ</th>
+                <th>微信</th>
+                <th>班级</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            <tr v-for="(students,index) in studentsList">
+                <td><input type="text" v-model="students.name" /></td>
+                <td><input type="text" v-model="students.number" /></td>
+                <td><input type="text" v-model="students.sex" /></td>
+                <td><input type="text" v-model="students.age" /></td>
+                <td><input type="text" v-model="students.phone" /></td>
+                <td><input type="text" v-model="students.qq" /></td>
+                <td><input type="text" v-model="students.wechat" /></td>
+                <td>
+                    <select v-model="students.classesId">
+                            <option v-for="classes in classesList" v-bind:value="classes.Id">{{classes.ClassName}}</option>
+                    </select>
+                </td>
+                @*<td><input type="text" v-model="students.classes" /></td>*@
+                <td>
+                    <select v-model="students.status">
+
+                        <option v-for="status in studentstatus" v-bind:value="status.value">
+                            {{status.value}}
+                        </option>
+
+                    </select>
+                </td>
+                <td>
+                    <div v-if="students.id!=''">
+                        <a href="#" v-on:click="updatestudents(students.id,students.number,students.name,students.sex,students.age,students.phone,students.qq,students.wechat,students.classesId,students.status)">修改</a>
+                        <a href="#" v-on:click="deletestudentsById(students.id)">删除</a>
+                    </div>
+                    <div v-else>
+                        <a href="#" v-on:click="addstudents(students.number,students.name,students.sex,students.age,students.phone,students.qq,students.wechat,students.classesId,students.status)">添加</a>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            studentsList: [],
+            classesList: [],
+            studentstatus: [{ value: '正常' }, {value:'挂籍'}, {value:'退学'}]
+
+        },
+        mounted() {
+            this.getAllstudentss(),
+                this.getAllclasses();
+        },
+        methods: {
+            getAllstudentss: function () {
+                axios.get('@Url.Action("Get", "Students")'
+                ).then(
+                    (response) => {
+                        this.studentsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.studentsList.push(response.data[i]);
+                        }
+                        this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: ""});
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllclasses: function () {
+                axios.get('@Url.Action("Get", "Classes")'
+                ).then(
+                    (response) => {
+                        this.classesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classesList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            addstudents: function (number, name, sex, age, phone, qq, wechat,classesId,status) {
+                axios.post('@Url.Action("Add", "Students")', { Number: number, Name: name, Sex: sex, Age: age, Phone: phone, QQ: qq, Wechat: wechat, ClassesId: classesId,Status:status}).then(
+                    (response) => {
+                        this.studentsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.studentsList.push(response.data[i]);
+                        }
+                        this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: "" });
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            updatestudents: function (id,number, name, sex, age, phone, qq, wechat, classesId, status) {
+                axios.post('@Url.Action("Edit", "Students")', { Id:id, Number: number, Name: name, Sex: sex, Age: age, Phone: phone, QQ: qq, Wechat: wechat, ClassesId: classesId, Status: status  }).then(
+                    (response) => {
+                        this.studentsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.studentsList.push(response.data[i]);
+                        }
+                        this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: "" });
+                        alert("修改成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            deletestudentsById: function (id) {
+                axios.post('@Url.Action("Delete", "Students")', { id: id }).then(
+                    (response) => {
+                        this.studentsList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.studentsList.push(response.data[i]);
+                        }
+                        this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: "" });
+                        alert("删除成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+
+    });
+
+</script>

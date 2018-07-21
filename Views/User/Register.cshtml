@@ -1,0 +1,65 @@
+﻿<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<div id="app">
+    真实姓名
+    <input type="text" v-model="name" /><br />
+    用户名
+    <input type="text" v-model="username" /><br />
+    移动电话
+    <input type="text" v-model="telephone" /><br />
+    选择职能<br />
+    <input type="radio" id="teacher" value="t" v-model="power">
+    <label for="teacher">教师</label>
+    &nbsp;
+    <input type="radio" id="lecturer" value="l" v-model="power">
+    <label for="lecturer">讲师</label><br />
+    密码
+    <input type="password" id="password" v-model="password" /><br />
+    确认密码
+    <input type="password" id="second" />
+    <br />
+    <a href="#" v-on:click="register(name,username,telephone,power,password)">注册</a><br />
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+
+        },
+        mounted() {
+        },
+        methods: {
+            register: function (name, username, telephone, power, password) {
+                var one = document.getElementById("password").value;
+                var two = document.getElementById("second").value;
+                if (one === two) {
+                    axios.post('@Url.Action("Register", "User")',
+                            { Name: name, Username: username, Telephone: telephone, Power: power, Password: password })
+                        .then(
+                        (response) => {
+                            if (response.data == "0" || response.data == "ero") {
+                                alert("出错！");
+                            } else if (response.data == "name") {
+                                alert("您输入的姓名以存在账户!");
+                            } else if (response.data == "username") {
+                                alert("用户名重名！")
+                            } else if (response.data == "ok") {
+                                alert("注册成功" + response.data);
+                            }
+                            },
+                            (response) => {
+                                alert(response.status);
+                            }
+                        ).catch(function(response) {
+                            alert(response);
+                        });
+                } else {
+                    alert("两次输入的密码不一致！");
+                }
+
+            }
+        }
+
+    });
+
+</script>

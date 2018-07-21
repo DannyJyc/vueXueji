@@ -1,0 +1,209 @@
+﻿<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<style>
+    div #ct {
+        margin-left: 20px;
+        margin-top: 20px;
+        width: 200px;
+        height: 250px;
+        border: 1px solid blue;
+    }
+</style>
+<div id="app">
+    <table v-show="classtimeList.length" class="table-condensed" border="1">
+
+        <thead class="navbar-header">
+            <tr>
+                <th>class</th>
+                <th>courses</th>
+                <th>session</th>
+                <th>classroom</th>
+                <th>week</th>
+                <th>LessonsOrder</th>
+                <th>startweek</th>
+                <th>endweek</th>
+                <th>操作</th>
+            </tr>
+            <tr v-for="(classtime,index) in classtimeList">
+                <td>
+                    <select v-model="classtime.ClassesId">
+                        <option v-for="classes in classesList" v-bind:value="classes.Id">{{classes.ClassName}}</option>
+                    </select>
+                </td>
+                <td>
+                    <select v-model="classtime.CoursesId">
+                        <option v-for="courses in coursesList" v-bind:value="courses.Id">{{courses.Name}}{{courses.LecturerName}}</option>
+                    </select>
+                </td>
+                <td>
+                    <select v-model="classtime.WeekArrangingId">
+                        <option v-for="weekarranging in weekarrangingList" v-bind:value="weekarranging.Id">{{weekarranging.Years}}{{weekarranging.Session}}</option>
+                    </select>
+                </td>
+                <td>
+                    <select v-model="classtime.ClassroomId">
+                        <option v-for="classroom in classroomList" v-bind:value="classroom.Id">{{classroom.Name}}</option>
+                    </select>
+                </td>
+                <td><input type="text" v-model="classtime.WeekDays" /></td>
+                <td><input type="text" v-model="classtime.LessonsOrder" /></td>
+                <td><input type="text" v-model="classtime.WeekStart" /></td>
+                <td><input type="text" v-model="classtime.WeekEnd" /></td>
+
+                <td>
+                    <div v-if="classtime.Id!=''">
+                        <a href="#" v-on:click="update(classtime.Id,classtime.ClassesId,classtime.CoursesId,classtime.WeekArrangingId,classtime.WeekStart,classtime.WeekEnd,classtime.LessonsOrder,classtime.ClassroomId,classtime.WeekDays)">修改</a>
+
+                    </div>
+                    <div v-else>
+                        <a href="#" v-on:click="Add(classtime.ClassesId,classtime.CoursesId,classtime.WeekArrangingId,classtime.WeekStart,classtime.WeekEnd,classtime.LessonsOrder,classtime.ClassroomId,classtime.WeekDays)">添加</a>
+                    </div>
+                </td>
+
+
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            classtimeList: [],
+            classesList: [],
+            coursesList: [],
+            weekarrangingList: [],
+            classroomList: []
+        },
+        mounted() {
+            this.getclasstime(),
+                this.getAllclasses(),
+                this.getAllcourses(),
+                this.getAllweekarranging(),
+                this.getAllclassroom();
+        },
+        methods: {
+            getclasstime: function () {
+                axios.get('@Url.Action("GetAll", "Classtime")'
+                ).then(
+                    (response) => {
+                        this.classtimeList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classtimeList.push(response.data[i]);
+                        }
+                        this.classtimeList.push({ Id: "", ClassesId: "", CoursesId: "", WeekArrangingId: "", WeekStart: "", WeekEnd: "", LessonsOrder: "", ClassroomId: "", WeekDays: ""});
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllclasses: function () {
+                axios.get('@Url.Action("Get", "Classes")'
+                ).then(
+                    (response) => {
+                        this.classesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classesList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllcourses:function () {
+                axios.get('@Url.Action("Get", "Courses")'
+                ).then(
+                    (response) => {
+                        this.coursesList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.coursesList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllweekarranging:function () {
+                axios.get('@Url.Action("WeekArranging", "Classtime")'
+                ).then(
+                    (response) => {
+                        this.weekarrangingList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.weekarrangingList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllclassroom:function () {
+                axios.get('@Url.Action("Classroom", "Classtime")'
+                ).then(
+                    (response) => {
+                        this.classroomList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classroomList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            update: function ( id,  classesid,  coursesid,  weekarrangingid,  weekstart,  weekend,  lessonsorder, classroomId,weekdays ) {
+                axios.post('@Url.Action("Edit", "Classtime")', { Id:id,ClassesId:classesid,CoursesId:coursesid,WeekArrangingId:weekarrangingid,WeekStart:weekstart,WeekEnd:weekend,LessonsOrder:lessonsorder,ClassroomId:classroomId,WeekDays:weekdays }).then(
+                    (response) => {
+                        this.classtimeList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classtimeList.push(response.data[i]);
+                        }
+                        this.classtimeList.push({ Id: "", ClassesId: "", CoursesId: "", WeekArrangingId: "", WeekStart: "", WeekEnd: "", LessonsOrder: "", ClassroomId: "", WeekDays: ""});
+
+                        alert("修改成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            Add: function ( classesid,  coursesid,  weekarrangingid,  weekstart,  weekend,  lessonsorder, classroomId,weekdays ) {
+                axios.post('@Url.Action("Add", "Classtime")', { ClassesId:classesid,CoursesId:coursesid,WeekArrangingId:weekarrangingid,WeekStart:weekstart,WeekEnd:weekend,LessonsOrder:lessonsorder,ClassroomId:classroomId,WeekDays:weekdays }).then(
+                    (response) => {
+                        this.classtimeList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.classtimeList.push(response.data[i]);
+                        }
+                        this.classtimeList.push({ Id: "", ClassesId: "", CoursesId: "", WeekArrangingId: "", WeekStart: "", WeekEnd: "", LessonsOrder: "", ClassroomId: "", WeekDays: ""});
+
+                        alert("添加成功");
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+
+    });
+
+</script>
