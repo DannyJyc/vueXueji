@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using testxueji.Models;
 
 namespace vuexueji.DAL
 {
-    public class UserDAL
+    public class UserDal
     {
         public static string UserPower(string username, string password)
         {

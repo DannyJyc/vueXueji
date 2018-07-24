@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using testxueji.Models;
 
 namespace vuexueji.DAL
 {
-    public class RollcallDAL
+    public class RollcallDal
     {
         public static string StringJson(int id)
         {
@@ -15,6 +15,15 @@ namespace vuexueji.DAL
                 var json = db.Rollcalls.SingleOrDefault(rc => rc.Id == id);
                 return json.StudentState;
             }
+        }
+
+        public static IEnumerable AllList()
+        {
+            var db = new XuejiContext();
+            var list = from rollcall in db.Rollcalls
+                       select rollcall;
+            return list;
+
         }
 
         public static IEnumerable<Rollcall> List(int id)
@@ -38,7 +47,7 @@ namespace vuexueji.DAL
 
                 for (var i = 0; i < namearr.Length; i++)
                 {
-                    var studentsid = Convert.ToInt16(namearr[i]) ;
+                    var studentsid = Convert.ToInt16(namearr[i]);
                     var single = db.Studentses.SingleOrDefault(s => s.Id == studentsid);
                     str += str == "[" ? "{\"StudentsId\":\"" + namearr[i] + "\",\"StudentsName\":\"" + single.Name + "\",\"State\":\"" + statuearr[i] + "\"}" : ",{\"StudentsId\":\"" + namearr[i] + "\",\"StudentsName\":\"" + single.Name + "\",\"State\":\"" + statuearr[i] + "\"}";
                 }
@@ -59,7 +68,7 @@ namespace vuexueji.DAL
             return "1";
         }
 
-        public static string erroeWhenNull()
+        public static string ErroeWhenNull()
         {
             return "未找到指定对象！";
         }
@@ -84,6 +93,25 @@ namespace vuexueji.DAL
             }
 
             return null;
+        }
+
+        public static CoursesArrangingName SingleCoursesArranging(int id)
+        {
+            var db = new XuejiContext();
+            var list = (from coursesarranging in db.CoursesArrangings
+                       join classes in db.Classeses on coursesarranging.ClassesId equals classes.Id
+                       join majors in db.Majorses on classes.MajorsId equals majors.Id
+                       join courses in db.Courseses on coursesarranging.CoursesId equals courses.Id
+                       where coursesarranging.Id == id
+                       select new CoursesArrangingName
+                       {
+                           ClassesName = classes.Year + majors.Name,
+                           CoursesName = courses.Name,
+                           WeekDays = coursesarranging.WeekDays,
+                           LessonsOrder = coursesarranging.LessonsOrder
+                       }).SingleOrDefault();
+
+            return list;
         }
 
         public static IEnumerable<CoursesArrangingName> LeList(int id)

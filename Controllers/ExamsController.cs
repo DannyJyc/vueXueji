@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using testxueji.Models;
 using vuexueji.DAL;
 
@@ -14,19 +10,23 @@ namespace vuexueji.Controllers
         public ActionResult Index(int id)
         {
             ViewBag.id = id;
-            ViewBag.students = RollcallDAL.StudentsList(id);
+            ViewBag.students = RollcallDal.StudentsList(id);
             return View();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="eb"></param>
+        /// <returns></returns>
         public ActionResult Addexams(ExamsBox eb)
         {
             
-            return Content(ExamsDAL.Add(eb));
+            return Content(ExamsDal.Add(eb));
         }
 
         public ActionResult List(int id)
         {
-            ViewBag.list = ExamsDAL.List(id);
+            ViewBag.list = ExamsDal.List(id);
             return View();
         }
 
@@ -36,9 +36,15 @@ namespace vuexueji.Controllers
             return View();
         }
 
-        public ActionResult StudentsJson(int Id)
+        public ActionResult StudentsJson(int id)
         {
-            return Content(ExamsDAL.StringJson(Id));
+            return Content(ExamsDal.StringJson(id));
+        }
+
+        public ActionResult AllClasses()
+        {
+            ViewBag.classes = ClassesDal.List();
+            return View();
         }
     }
 }

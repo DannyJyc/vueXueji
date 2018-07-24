@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using testxueji.Models;
 using vuexueji.DAL;
 
@@ -32,47 +28,60 @@ namespace vuexueji.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult Add(CoursesArranging ca)
         {
-            ClasstimeDAL.Add(ca);
-            return Json(ClasstimeDAL.List());
+            if ((string)Session["Power"] != "1") return Json("0");
+
+            ClasstimeDal.Add(ca);
+            return Json(ClasstimeDal.List());
         }
 
         [HttpPost]
         public ActionResult Edit(CoursesArranging ca)
         {
-            ClasstimeDAL.Edit(ca);
-            return Json(ClasstimeDAL.List());
+            if ((string)Session["Power"] != "1") return Json("0");
+
+            ClasstimeDal.Edit(ca);
+            return Json(ClasstimeDal.List());
         }
 
         public JsonResult Classroom()
         {
-            return Json(ClasstimeDAL.Classrooms(), JsonRequestBehavior.AllowGet);
+            return Json(ClasstimeDal.Classrooms(), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult WeekArranging()
         {
-            return Json(ClasstimeDAL.WeekList(), JsonRequestBehavior.AllowGet);//写死班级ID=2
+            return Json(ClasstimeDal.WeekList(), JsonRequestBehavior.AllowGet);//写死班级ID=2
         }
 
-        public ActionResult AddWeek(string DateStart,string DateEnd)
+        public ActionResult AddWeek(string dateStart,string dateEnd)
         {            
-            return Content(ClasstimeDAL.AddWeekarranging(DateStart, DateEnd));
+            return Content(ClasstimeDal.AddWeekarranging(dateStart, dateEnd));
         }
 
         public JsonResult SingleJsonResult()
         {
-            return Json(ClasstimeDAL.SingleCoursesArrangingNames(2), JsonRequestBehavior.AllowGet);
+            return Json(ClasstimeDal.SingleCoursesArrangingNames(2), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Get()
         {
-            return Json(ClasstimeDAL.ClassesList(2), JsonRequestBehavior.AllowGet);//写死班级ID=2
+            return Json(ClasstimeDal.ClassesList(2), JsonRequestBehavior.AllowGet);//写死班级ID=2
         }
 
         public JsonResult GetAll()
         {
-            return Json(ClasstimeDAL.List(), JsonRequestBehavior.AllowGet);
+            if ((string)Session["Power"] != "1") return Json("0");
+
+            return Json(ClasstimeDal.List(), JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -6,6 +6,15 @@
         margin: 10px auto auto 10px;
     }
 </style>
+<ul>
+    <li><a href="/Classes/Index">班级</a></li>
+    <li><a href="/Students/Index">学生</a></li>
+    <li><a href="/Majors/Index">专业</a></li>
+    <li><a href="/Courses/Index">课程</a></li>
+    <li><a href="/Exams/AllClasses">考试</a></li>
+    <li><a href="/Rollcall/AllList">点名</a></li>
+    <li><a href="/Classtime/AllClasstime">课表</a></li>
+</ul>
 <div id="app">
     <table v-show="studentsList.length" class="table-condensed" border="1">
         <thead class="navbar-header">
@@ -22,21 +31,21 @@
                 <th>操作</th>
             </tr>
             <tr v-for="(students,index) in studentsList">
-                <td><input type="text" v-model="students.name" /></td>
-                <td><input type="text" v-model="students.number" /></td>
-                <td><input type="text" v-model="students.sex" /></td>
-                <td><input type="text" v-model="students.age" /></td>
-                <td><input type="text" v-model="students.phone" /></td>
-                <td><input type="text" v-model="students.qq" /></td>
-                <td><input type="text" v-model="students.wechat" /></td>
+                <td><input type="text" v-model="students.Name" /></td>
+                <td><input type="text" v-model="students.Number" /></td>
+                <td><input type="text" v-model="students.Sex" /></td>
+                <td><input type="text" v-model="students.Age" /></td>
+                <td><input type="text" v-model="students.Phone" /></td>
+                <td><input type="text" v-model="students.Qq" /></td>
+                <td><input type="text" v-model="students.Wechat" /></td>
                 <td>
-                    <select v-model="students.classesId">
-                            <option v-for="classes in classesList" v-bind:value="classes.Id">{{classes.ClassName}}</option>
+                    <select v-model="students.ClassesId">
+                        <option v-for="classes in classesList" v-bind:value="classes.Id">{{classes.ClassName}}</option>
                     </select>
                 </td>
                 @*<td><input type="text" v-model="students.classes" /></td>*@
                 <td>
-                    <select v-model="students.status">
+                    <select v-model="students.Status">
 
                         <option v-for="status in studentstatus" v-bind:value="status.value">
                             {{status.value}}
@@ -46,11 +55,11 @@
                 </td>
                 <td>
                     <div v-if="students.id!=''">
-                        <a href="#" v-on:click="updatestudents(students.id,students.number,students.name,students.sex,students.age,students.phone,students.qq,students.wechat,students.classesId,students.status)">修改</a>
-                        <a href="#" v-on:click="deletestudentsById(students.id)">删除</a>
+                        <a href="#" v-on:click="updatestudents(students.Id,students.Number,students.Name,students.Sex,students.Age,students.Phone,students.Qq,students.Wechat,students.ClassesId,students.Status)">修改</a>
+                        <a href="#" v-on:click="deletestudentsById(students.Id)">删除</a>
                     </div>
                     <div v-else>
-                        <a href="#" v-on:click="addstudents(students.number,students.name,students.sex,students.age,students.phone,students.qq,students.wechat,students.classesId,students.status)">添加</a>
+                        <a href="#" v-on:click="addstudents(students.Number,students.Name,students.Sex,students.Age,students.Phone,students.Qq,students.Wechat,students.ClassesId,students.Status)">添加</a>
                     </div>
                 </td>
             </tr>
@@ -76,10 +85,15 @@
                 ).then(
                     (response) => {
                         this.studentsList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.studentsList.push(response.data[i]);
+                        if (response.data == 0) {
+                            alert("权限不足");
+                        } else {
+                            for (var i = 0; i < response.data.length; i++) {
+                                this.studentsList.push(response.data[i]);
+                            }
+                            this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: ""});
                         }
-                        this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: ""});
+
 
                     },
                     (response) => {
@@ -94,6 +108,7 @@
                 ).then(
                     (response) => {
                         this.classesList = [];
+
                         for (var i = 0; i < response.data.length; i++) {
                             this.classesList.push(response.data[i]);
                         }
@@ -105,30 +120,36 @@
                     alert(response);
                 });
             },
-            addstudents: function (number, name, sex, age, phone, qq, wechat,classesId,status) {
+            addstudents: function (number, name, sex, age, phone, qq, wechat, classesId, status) {
+
                 axios.post('@Url.Action("Add", "Students")', { Number: number, Name: name, Sex: sex, Age: age, Phone: phone, QQ: qq, Wechat: wechat, ClassesId: classesId,Status:status}).then(
                     (response) => {
-                        this.studentsList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.studentsList.push(response.data[i]);
+                        if (response.data == 0) {
+                            alert("权限不足");
                         }
-                        this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: "" });
+                        vm.getAllstudentss();
+                        //for (var i = 0; i < response.data.length; i++) {
+                        //    this.studentsList.push(response.data[i]);
+                        //}
+                        //this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: "" });
+
+
                     },
                     (response) => {
                         alert(response.status);
                     }
                 ).catch(function (response) {
                     alert(response);
-                });
+                        });
+
             },
             updatestudents: function (id,number, name, sex, age, phone, qq, wechat, classesId, status) {
                 axios.post('@Url.Action("Edit", "Students")', { Id:id, Number: number, Name: name, Sex: sex, Age: age, Phone: phone, QQ: qq, Wechat: wechat, ClassesId: classesId, Status: status  }).then(
                     (response) => {
-                        this.studentsList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.studentsList.push(response.data[i]);
+                        if (response.data == 0) {
+                            alert("权限不足");
                         }
-                        this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: "" });
+                        vm.getAllstudentss();
                         alert("修改成功");
                     },
                     (response) => {
@@ -141,11 +162,10 @@
             deletestudentsById: function (id) {
                 axios.post('@Url.Action("Delete", "Students")', { id: id }).then(
                     (response) => {
-                        this.studentsList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.studentsList.push(response.data[i]);
+                        if (response.data == 0) {
+                            alert("权限不足");
                         }
-                        this.studentsList.push({ id: "", number: "", name: "", sex: "", age: "", phone: "", qq: "", wechat: "", classesId: "", status: "" });
+                        vm.getAllstudentss();
                         alert("删除成功");
                     },
                     (response) => {

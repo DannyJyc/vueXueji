@@ -1,12 +1,12 @@
-﻿
+﻿<script src="~/Scripts/jquery-3.3.1.js"></script>
 <script src="~/Scripts/vue.js"></script>
 <script src="~/Scripts/axios.js"></script>
 <div id="app">
     用户名
-    <input type="text" v-model="username" /><br />
+    <input type="text" id="username" /><br />
     密码
-    <input type="text" v-model="password" /><br />
-    <a href="#" v-on:click="users(username,password)">登录</a><br />
+    <input type="text" id="password" /><br />
+    <a href="#" v-on:click="users()">登录</a><br />
     <a href="/User/Register">前往注册</a>
 </div>
 <script type="text/javascript">
@@ -18,13 +18,29 @@
         mounted() {
         },
         methods: {
-            users: function (username,password) {
+            users: function () {
+                var username = document.getElementById("username").value;
+                var password = document.getElementById("password").value;
                 axios.post('@Url.Action("List", "User")', { Username: username, Password:password }).then(
                     (response) => {
                         if (response.data == "0") {
                             alert("用户名或密码错误!");
                         } else {
-                            alert("修改成功" + response.data);
+                            alert("成功" + response.data);
+
+                            $.ajax({
+                                type: 'post',
+                                url: '/User/AddSession',
+                                data: { Power: response.data, Username: username },
+                                success: function (data) {
+                                    if (data == "1") {
+                                        window.location.href ='/Students/Index/';
+                                    } else {
+                                        alert("ero!");
+                                    }
+                                }
+                            });
+                            //alert("修改成功" + response.data);
                         }
 
                     },

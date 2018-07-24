@@ -1,0 +1,30 @@
+﻿<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<ul>
+    <li><a href="/Classes/Index">班级</a></li>
+    <li><a href="/Students/Index">学生</a></li>
+    <li><a href="/Majors/Index">专业</a></li>
+    <li><a href="/Courses/Index">课程</a></li>
+    <li><a href="/Exams/AllClasses">考试</a></li>
+    <li><a href="/Rollcall/AllList">点名</a></li>
+    <li><a href="/Classtime/AllClasstime">课表</a></li>
+</ul>
+<table class="table-condensed" border="1">
+    <thead class="navbar-header">
+    <tr>
+        <th>班级</th>
+        <th>导员</th>
+    </tr>
+    @foreach (var i in ViewBag.classes)
+    {
+        <tr>
+            <td><a href="/Exams/List/@i.Id">@i.ClassName</a></td>
+            <td>@i.TeacherName</td>
+        </tr>
+    }
+        
+    </thead>
+</table>

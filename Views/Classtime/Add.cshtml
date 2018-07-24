@@ -1,7 +1,50 @@
-﻿
-@{
-    ViewBag.Title = "Add";
-}
+﻿<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<div id="divcontent">
+    <h3>每门课的出勤</h3>
+    <table v-show="countList.length" border="1" bordercolor="blue" style="border-collapse:collapse;">
+        <tr>
+            <th>课程</th>
+            <th>出勤率</th>
+        </tr>
+        <tr v-for="count in countList">
+            <td>{{count.CoursesName}}</td>
+            <td>{{count.Count}}%</td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#divcontent",
+        data: {
+            countList: []
 
-<h2>Add</h2>
+        },
+        mounted() {
+            this.getAllcount();
+        },
+        methods: {
+            getAllcount: function () {
+                axios.get('@Url.Action("StudentsCount", "Desk")'
+                ).then(
+                    (response) => {
+                        this.countList = [];
+                        var dataObj = eval("(" + response.data + ")");
+                        for (var i = 0; i < dataObj.length; i++) {
+                            this.countList.push(dataObj[i]);
+                        }
 
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+
+    });
+
+</script>

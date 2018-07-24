@@ -1,9 +1,8 @@
 namespace vuexueji.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
-    public partial class _studentspassword : DbMigration
+
+    public partial class Studentspassword : DbMigration
     {
         public override void Up()
         {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace testxueji.Models
 {
@@ -45,4 +42,5 @@ namespace testxueji.Models
         public int ClassroomId { get; set; }
 
     }
+
 }

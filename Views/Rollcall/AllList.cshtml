@@ -1,0 +1,30 @@
+﻿@using vuexueji.DAL
+
+<style type="text/css">
+    table {
+        margin: 10px auto auto 10px;
+    }
+</style>
+<div id="app">
+    <table class="table-condensed" border="1">
+        <thead>
+        <tr>
+            <th>班级</th>
+            <th>课程(周-课)</th>
+            <th>时间</th>
+            <th>操作</th>
+        </tr>
+        @foreach (var i in ViewBag.rollcall)
+        {
+            <tr>
+                <td>@RollcallDal.SingleCoursesArranging(i.Id).ClassesName</td>
+                <td><a href="/Rollcall/StudentsStatus/@i.Id">@RollcallDal.SingleCoursesArranging(i.Id).CoursesName (@RollcallDal.SingleCoursesArranging(i.Id).WeekDays-@RollcallDal.SingleCoursesArranging(i.Id).LessonsOrder)</a></td>
+                <td>@i.CreateTime</td>
+                <td>@i.Name</td>
+            </tr>
+        }
+
+        </thead>
+
+    </table>
+</div>

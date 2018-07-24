@@ -1,9 +1,23 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=CLASSTIME_005CADD/@EntryIndexedValue">Classtime\Add</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=CLASSTIME_005CALLCLASSTIME/@EntryIndexedValue">Classtime\AllClasstime</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=CLASSTIME_005CINDEX/@EntryIndexedValue">Classtime\Index</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=EXAMS_005CALLCLASSES/@EntryIndexedValue">Exams\AllClasses</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=EXAMS_005CINDEX/@EntryIndexedValue">Exams\Index</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=ROLLCALL/@EntryIndexedValue">Rollcall</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=STUDENTS/@EntryIndexedValue">Students</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/MappedPaths/=CLASSES_005CINDEX/@EntryIndexedValue"></s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/MappedPaths/=CLASSTIME_005CEDIT/@EntryIndexedValue"></s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/MappedPaths/=COURSES_005CINDEX/@EntryIndexedValue"></s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/MappedPaths/=MAJORS_005CINDEX/@EntryIndexedValue"></s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=CLASSES_005CINDEX/@EntryIndexedValue">Classes\Index</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=CLASSTIME_005CADD/@EntryIndexedValue">Classtime\Add</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=CLASSTIME_005CALLCLASSTIME/@EntryIndexedValue">Classtime\AllClasstime</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=CLASSTIME_005CEDIT/@EntryIndexedValue">Classtime\Edit</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=CLASSTIME_005CINDEX/@EntryIndexedValue">Classtime\Index</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=COURSES_005CINDEX/@EntryIndexedValue">Courses\Index</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=EXAMS_005CALLCLASSES/@EntryIndexedValue">Exams\AllClasses</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=EXAMS_005CINDEX/@EntryIndexedValue">Exams\Index</s:String>
-	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=ROLLCALL/@EntryIndexedValue">Rollcall</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=MAJORS_005CINDEX/@EntryIndexedValue">Majors\Index</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=ROLLCALL/@EntryIndexedValue">Rollcall</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=STUDENTS/@EntryIndexedValue">Students</s:String></wpf:ResourceDictionary>

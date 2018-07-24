@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using testxueji.Models;
 
 namespace vuexueji.DAL
 {
 
-    public class StudentsDAL
+    public class StudentsDal
     {
         //public static string SingleName(int id)
         //{
@@ -30,17 +28,17 @@ namespace vuexueji.DAL
                            where s.Id == id
                            select new StudentsClasses()
                            {
-                               id = s.Id,
-                               number = s.Number,
-                               name = s.Name,
-                               sex = s.Sex,
-                               age = s.Age,
-                               phone = s.Phone,
-                               qq = s.QQ,
-                               wechat = s.Wechat,
-                               status = s.Status,
-                               classes = c.Year + m.Name,
-                               classesId = c.Id
+                               Id = s.Id,
+                               Number = s.Number,
+                               Name = s.Name,
+                               Sex = s.Sex,
+                               Age = s.Age,
+                               Phone = s.Phone,
+                               Qq = s.Qq,
+                               Wechat = s.Wechat,
+                               Status = s.Status,
+                               Classes = c.Year + m.Name,
+                               ClassesId = c.Id
                            };
                 return list.SingleOrDefault();
             }
@@ -68,17 +66,17 @@ namespace vuexueji.DAL
                            where s.Status != "退学"
                            select new StudentsClasses()
                            {
-                               id = s.Id,
-                               number = s.Number,
-                               name = s.Name,
-                               sex = s.Sex,
-                               age = s.Age,
-                               phone = s.Phone,
-                               qq = s.QQ,
-                               wechat = s.Wechat,
-                               status = s.Status,
-                               classes = c.Year + m.Name,
-                               classesId = c.Id
+                               Id = s.Id,
+                               Number = s.Number,
+                               Name = s.Name,
+                               Sex = s.Sex,
+                               Age = s.Age,
+                               Phone = s.Phone,
+                               Qq = s.Qq,
+                               Wechat = s.Wechat,
+                               Status = s.Status,
+                               Classes = c.Year + m.Name,
+                               ClassesId = c.Id
 
                            };
 
@@ -97,7 +95,7 @@ namespace vuexueji.DAL
                     Sex = c.Sex,
                     Age = c.Age,
                     Phone = c.Phone,
-                    QQ = c.QQ,
+                    Qq = c.Qq,
                     Wechat = c.Wechat,
                     Status = "正常",
                     ClassesId = c.ClassesId
@@ -119,7 +117,7 @@ namespace vuexueji.DAL
                     single.Sex = students.Sex;
                     single.Age = students.Age;
                     single.Phone = students.Phone;
-                    single.QQ = students.QQ;
+                    single.Qq = students.Qq;
                     single.Wechat = students.Wechat;
                     single.Status = students.Status;
                     single.ClassesId = students.ClassesId;

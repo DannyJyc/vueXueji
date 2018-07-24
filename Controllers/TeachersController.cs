@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using vuexueji.DAL;
 
 namespace vuexueji.Controllers
@@ -12,7 +8,7 @@ namespace vuexueji.Controllers
         // GET: Teachers
         public JsonResult Get()
         {
-            return Json(TeachersDAL.List(), JsonRequestBehavior.AllowGet);
+            return Json(TeachersDal.List(), JsonRequestBehavior.AllowGet);
         }
     }
 }

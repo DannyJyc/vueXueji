@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using testxueji.Models;
 using vuexueji.DAL;
 
@@ -18,28 +14,36 @@ namespace vuexueji.Controllers
 
         public JsonResult Get()
         {
-            return Json(ClassesDAL.List(), JsonRequestBehavior.AllowGet);
+            if ((string)Session["Power"] != "1") return Json("0");
+
+            return Json(ClassesDal.List(), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult Add(Classes c)
         {
-            ClassesDAL.Add(c);
-            return Json(ClassesDAL.List());
+            if ((string)Session["Power"] != "1") return Json("0");
+
+            ClassesDal.Add(c);
+            return Json(ClassesDal.List());
         }
 
         [HttpPost]
         public JsonResult Edit(Classes c)
         {
-            ClassesDAL.Edit(c);
-            return Json(ClassesDAL.List());
+            if ((string)Session["Power"] != "1") return Json("0");
+
+            ClassesDal.Edit(c);
+            return Json(ClassesDal.List());
         }
 
         [HttpPost]
         public JsonResult Del(int id)
         {
-            ClassesDAL.Del(id);
-            return Json(ClassesDAL.List());
+            if ((string)Session["Power"] != "1") return Json("0");
+
+            ClassesDal.Del(id);
+            return Json(ClassesDal.List());
         }
     }
 }

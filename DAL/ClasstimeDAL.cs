@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using testxueji.Models;
 
 namespace vuexueji.DAL
 {
-    public class ClasstimeDAL
+    public class ClasstimeDal
     {
         public static string AddWeekarranging(string start, string end)
         {
@@ -209,6 +208,7 @@ namespace vuexueji.DAL
                            {
                                Id = ca.Id,
                                ClassesName = c.Year + m.Name,
+                               ClassesId = c.Id,
                                CoursesName = co.Name,
                                LectureresName = l.Name,
                                WeekArranging = wa.Years,

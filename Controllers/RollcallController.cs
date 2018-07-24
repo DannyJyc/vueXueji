@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using testxueji.Models;
 using vuexueji.DAL;
@@ -19,17 +16,17 @@ namespace vuexueji.Controllers
 
         public JsonResult Get()
         {
-            return Json(RollcallDAL.LeList(1), JsonRequestBehavior.AllowGet);
+            return Json(RollcallDal.LeList(1), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult Addrollcall(int id)
         {
             Session["tempid"] = id;
-            ViewBag.students = RollcallDAL.StudentsList(id);
-            if (RollcallDAL.StudentsList(id) == null)
+            ViewBag.students = RollcallDal.StudentsList(id);
+            if (RollcallDal.StudentsList(id) == null)
             {
-                return Content(RollcallDAL.erroeWhenNull());
+                return Content(RollcallDal.ErroeWhenNull());
             }
             return View();
         }
@@ -38,12 +35,12 @@ namespace vuexueji.Controllers
         public ActionResult Addrollcall(StudentState sr)
         {
             
-            return Content(RollcallDAL.StudentsStatus(sr, Convert.ToInt16(Session["tempid"])));
+            return Content(RollcallDal.StudentsStatus(sr, Convert.ToInt16(Session["tempid"])));
         }
 
         public ActionResult ListRollcall()
         {
-            ViewBag.rollcall = RollcallDAL.List(Convert.ToInt16(Session["tempid"]));
+            ViewBag.rollcall = RollcallDal.List(Convert.ToInt16(Session["tempid"]));
             return View();
         }
 
@@ -53,9 +50,16 @@ namespace vuexueji.Controllers
             return View();
         }
 
-        public ActionResult StudentsJson(int Id)
+        public ActionResult StudentsJson(int id)
         {
-            return Content(RollcallDAL.StringJson(Id));
+            return Content(RollcallDal.StringJson(id));
+        }
+
+        [HttpGet]
+        public ActionResult AllList()
+        {
+            ViewBag.rollcall = RollcallDal.AllList();
+            return View();
         }
     }
 }

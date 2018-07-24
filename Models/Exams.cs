@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace testxueji.Models
 {
@@ -16,6 +13,13 @@ namespace testxueji.Models
         public CoursesArranging CoursesArranging { get; set; }
     }
 
+    public class StudentScore
+    {
+        public int StudentsId { get; set; }
+        public string StudentsName { get; set; }
+        public int Score { get; set; }
+    }
+
     public class ExamsBox
     {
         public int CoursesArrangingId { get; set; }
@@ -23,5 +27,14 @@ namespace testxueji.Models
         public DateTime Examstime { get; set; }
         public string StudentsId { get; set; }
         public string Score { get; set; }
+    }
+
+    public class ExamsList
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public string CoursesName { get; set; }
+        public string StudentScore { get; set; }
     }
 }

@@ -33,7 +33,7 @@
             weekarranging: function () {
                 var start = document.getElementById("datestart").value;
                 var end = document.getElementById("dateend").value;
-                axios.post('@Url.Action("AddWeek", "Classtime")', { DateStart: start, DateEnd: end }).then(
+                axios.post('@Url.Action("AddWeek", "Classtime")', { dateStart: start, dateEnd: end }).then(
                     (response) => {
                         if (response.data == "1") {
                             alert("添加成功");

@@ -6,6 +6,15 @@
         margin: 10px auto auto 10px;
     }
 </style>
+<ul>
+    <li><a href="/Classes/Index">班级</a></li>
+    <li><a href="/Students/Index">学生</a></li>
+    <li><a href="/Majors/Index">专业</a></li>
+    <li><a href="/Courses/Index">课程</a></li>
+    <li><a href="/Exams/AllClasses">考试</a></li>
+    <li><a href="/Rollcall/AllList">点名</a></li>
+    <li><a href="/Classtime/AllClasstime">课表</a></li>
+</ul>
 <div id="app">
     <table v-show="classesList.length" class="table-condensed" border="1">
         <thead class="navbar-header">
@@ -62,10 +71,16 @@
                 ).then(
                     (response) => {
                         this.classesList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.classesList.push(response.data[i]);
+                        if (response.data == "0") {
+                            alert("权限不足!");
+                        } else {
+                            for (var i = 0; i < response.data.length; i++) {
+                                this.classesList.push(response.data[i]);
+                            }
+                            this.classesList.push({ Id:"",ClassName:"",MajorsId:"",TeacherId:"",Year:"",TeacherName:""});
                         }
-                        this.classesList.push({ Id:"",ClassName:"",MajorsId:"",TeacherId:"",Year:"",TeacherName:""});
+
+
 
                     },
                     (response) => {
@@ -112,11 +127,10 @@
             addclasses: function (teachersid,majorsid,year) {
                 axios.post('@Url.Action("Add", "Classes")', { Year: year, MajorsId: majorsid, TeacherId: teachersid }).then(
                     (response) => {
-                        this.classesList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.classesList.push(response.data[i]);
+                        if (response.data == "0") {
+                            alert("权限不足!");
                         }
-                        this.classesList.push({ Id: "", ClassName: "", MajorsId: "", TeacherId: "", Year: "", TeacherName: "" });
+                        vm.getAllclasses();
                     },
                     (response) => {
                         alert(response.status);
@@ -128,11 +142,10 @@
             updateclasses: function (id, teachersid, majorsid, year) {
                 axios.post('@Url.Action("Edit", "Classes")', { Id:id,Year: year, MajorsId: majorsid, TeacherId: teachersid  }).then(
                     (response) => {
-                        this.classesList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.classesList.push(response.data[i]);
+                        if (response.data == "0") {
+                            alert("权限不足!");
                         }
-                        this.classesList.push({ Id: "", ClassName: "", MajorsId: "", TeacherId: "", Year: "", TeacherName: "" });
+                        vm.getAllclasses();
                         alert("修改成功");
                     },
                     (response) => {
@@ -145,11 +158,10 @@
             deleteclassesId: function (id) {
                 axios.post('@Url.Action("Del", "Classes")', { id: id }).then(
                     (response) => {
-                        this.classesList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.classesList.push(response.data[i]);
+                        if (response.data == "0") {
+                            alert("权限不足!");
                         }
-                        this.classesList.push({ Id: "", ClassName: "", MajorsId: "", TeacherId: "", Year: "", TeacherName: "" });
+                        vm.getAllclasses();
                         alert("删除成功");
                     },
                     (response) => {

@@ -1,9 +1,8 @@
 namespace vuexueji.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
-    public partial class _first : DbMigration
+
+    public partial class First : DbMigration
     {
         public override void Up()
         {

@@ -9,6 +9,16 @@
         border: 1px solid blue;
     }
 </style>
+<ul>
+    <li><a href="/Classes/Index">班级</a></li>
+    <li><a href="/Students/Index">学生</a></li>
+    <li><a href="/Majors/Index">专业</a></li>
+    <li><a href="/Courses/Index">课程</a></li>
+    <li><a href="/Exams/AllClasses">考试</a></li>
+    <li><a href="/Rollcall/AllList">点名</a></li>
+    <li><a href="/Classtime/AllClasstime">课表</a></li>
+</ul>
+<a href="/Classtime/Index">添加学期</a>
 <div id="app">
     <table v-show="classtimeList.length" class="table-condensed" border="1">
 
@@ -169,12 +179,11 @@
             update: function ( id,  classesid,  coursesid,  weekarrangingid,  weekstart,  weekend,  lessonsorder, classroomId,weekdays ) {
                 axios.post('@Url.Action("Edit", "Classtime")', { Id:id,ClassesId:classesid,CoursesId:coursesid,WeekArrangingId:weekarrangingid,WeekStart:weekstart,WeekEnd:weekend,LessonsOrder:lessonsorder,ClassroomId:classroomId,WeekDays:weekdays }).then(
                     (response) => {
-                        this.classtimeList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.classtimeList.push(response.data[i]);
+                        if (response == "") {
+                            alert("权限不足!");
                         }
-                        this.classtimeList.push({ Id: "", ClassesId: "", CoursesId: "", WeekArrangingId: "", WeekStart: "", WeekEnd: "", LessonsOrder: "", ClassroomId: "", WeekDays: ""});
-
+                        vm.getclasstime();
+                       
                         alert("修改成功");
                     },
                     (response) => {
@@ -187,12 +196,10 @@
             Add: function ( classesid,  coursesid,  weekarrangingid,  weekstart,  weekend,  lessonsorder, classroomId,weekdays ) {
                 axios.post('@Url.Action("Add", "Classtime")', { ClassesId:classesid,CoursesId:coursesid,WeekArrangingId:weekarrangingid,WeekStart:weekstart,WeekEnd:weekend,LessonsOrder:lessonsorder,ClassroomId:classroomId,WeekDays:weekdays }).then(
                     (response) => {
-                        this.classtimeList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.classtimeList.push(response.data[i]);
+                        if (response == "") {
+                            alert("权限不足!");
                         }
-                        this.classtimeList.push({ Id: "", ClassesId: "", CoursesId: "", WeekArrangingId: "", WeekStart: "", WeekEnd: "", LessonsOrder: "", ClassroomId: "", WeekDays: ""});
-
+                        vm.getclasstime();
                         alert("添加成功");
                     },
                     (response) => {

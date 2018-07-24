@@ -7,9 +7,9 @@ namespace vuexueji.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class _studentspassword : IMigrationMetadata
+    public sealed partial class Studentspassword : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(_studentspassword));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Studentspassword));
         
         string IMigrationMetadata.Id
         {

@@ -79,7 +79,9 @@ c:\users\dannyjiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.csproj.Cor
 c:\users\dannyjiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.csproj.CopyComplete
 c:\users\dannyjiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.dll
 c:\users\dannyjiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.pdb
-C:\Users\DannyJiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.Migrations._first.resources
 C:\Users\DannyJiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.csproj.GenerateResource.cache
-C:\Users\DannyJiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.Migrations._studentspassword.resources
-C:\Users\DannyJiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.Migrations._teacherstelephone.resources
+C:\Users\DannyJiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.Migrations.First.resources
+C:\Users\DannyJiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.Migrations.Studentspassword.resources
+C:\Users\DannyJiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.Migrations.Teacherstelephone.resources
+C:\Users\DannyJiang\source\repos\vuexueji\vuexueji\bin\Newtonsoft.Json.dll
+C:\Users\DannyJiang\source\repos\vuexueji\vuexueji\bin\Newtonsoft.Json.xml

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 
 namespace testxueji.Models
 {
@@ -32,7 +28,7 @@ namespace testxueji.Models
             modelBuilder.Entity<Students>().Property(s => s.Name).IsRequired().HasMaxLength(8);
             modelBuilder.Entity<Students>().Property(s => s.Sex).HasMaxLength(2);
             modelBuilder.Entity<Students>().Property(s => s.Phone).HasMaxLength(12);
-            modelBuilder.Entity<Students>().Property(s => s.QQ).HasMaxLength(12);
+            modelBuilder.Entity<Students>().Property(s => s.Qq).HasMaxLength(12);
             modelBuilder.Entity<Students>().Property(s => s.Wechat).HasMaxLength(30);
             modelBuilder.Entity<Students>().Property(s => s.Status).HasMaxLength(4);
             modelBuilder.Entity<Students>().Property(s => s.PassWord).HasMaxLength(16);//MD5/16位加密

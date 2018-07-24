@@ -1,0 +1,154 @@
+﻿
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #divcontent div {
+            height: 350px;
+            width: 405px;
+            margin-left: 50px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 20px;
+            border: 1px solid blue;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>学生工作台</h2>
+    <div id="divcontent">
+
+        <div>
+            <h3>综合出勤率</h3>
+            <h1>@ViewBag.gross%</h1>
+        </div>
+        <div>
+            <h3>每门课的出勤</h3>
+            <table v-show="countList.length" border="1" bordercolor="blue" style="border-collapse:collapse;">
+                <tr>
+                    <th>课程</th>
+                    <th>出勤率</th>
+                </tr>
+                <tr v-for="count in countList">
+                    <td>{{count.CoursesName}}</td>
+                    <td>{{count.Count}}%</td>
+                </tr>
+            </table>
+        </div>
+        @{
+            int[] temp = new int[3];
+            temp = ViewBag.check;
+        }
+        <div>
+            <h3>考勤</h3>
+            <h4>
+                到目前为止一共上了
+                <span style="color: rgb(0, 255, 0);">@temp[0]</span>
+            </h4>
+            <h4>
+                其中你有
+                <a href="#" style="color:red;">@temp[1]节课</a> 没到！
+            </h4>
+            <h4>
+                迟到了
+                <a href="#" style="color: rgb(253, 215, 0);">@temp[2]节课</a> ！
+            </h4>
+
+            <h5>
+                <span style="color: orangered;">注意：</span>迟到和所缺的课程在一定程度上能影响到该科目的期末成绩！甚至拿不到毕业证呦！快去点击一下所缺的
+                <span style="color: rgb(24, 24, 255);">课节数&nbsp;</span>看看是哪节课缺了吧！
+            </h5>
+        </div>
+        <div>
+            <h3>成绩</h3>
+            <p>考试部分会将出过分数的考试信息置顶！</p>
+            <table v-show="scoreList.length" border="1" bordercolor="blue" style="border-collapse:collapse;">
+                <tr>
+                    <th>考试时间</th>
+                    <th>考试名称</th>
+                    <th>考试科目</th>
+                    <th>分数</th>
+                </tr>
+                <tr v-for="score in scoreList">
+                    <td>{{score.TimeStamp}}</td>
+                    <td>{{score.Name}}</td>
+                    <td>{{score.CoursesName}}</td>
+                    <td>
+                        <span v-if="score.Score >= 85" style="color: green;">{{score.Score}}</span>
+                        <span v-else-if="score.Score >= 60" style="color: rgb(253, 215, 0);">{{score.Score}}</span>
+                        <span v-else-if="score.Score >=0" style="color: red;">{{score.Score}}</span>
+                        <span v-else>暂无成绩</span>
+
+                    </td>
+                </tr>
+            </table>
+            <h5>注：考试分数为<span style="color: green;">绿色</span>和<span style="color: rgb(253, 215, 0);">黄色</span>均为通过考试！<span style="color: red;">红色</span>为未通过考试（需进行补考！）‘暂无成绩’：缺考 或 判卷老师工作中！</h5>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: "#divcontent",
+        data: {
+            countList: [],
+            scoreList:[]
+
+        },
+        mounted() {
+            this.getAllcount(),
+                this.getAllscore();
+        },
+        methods: {
+            getAllcount: function () {
+                    axios.get('@Url.Action("StudentsCount", "Desk")'
+                ).then(
+                    (response) => {
+                        this.countList = [];
+                        var dataObj = eval("(" + response.data + ")");
+                        for (var i = 0; i < dataObj.length; i++) {
+                            this.countList.push(dataObj[i]);
+                        }
+
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            getAllscore: function () {
+                axios.get('@Url.Action("StudentsScore", "Desk")'
+                ).then(
+                    (response) => {
+                        this.scoreList = [];
+                        var dataObj = eval("(" + response.data + ")");
+                        for (var i = 0; i < dataObj.length; i++) {
+                            this.scoreList.push(dataObj[i]);
+                        }
+
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            }
+        }
+
+    });
+
+</script>
+</html>

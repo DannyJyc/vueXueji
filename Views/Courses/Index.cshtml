@@ -5,6 +5,15 @@
         margin: 10px auto auto 10px;
     }
 </style>
+<ul>
+    <li><a href="/Classes/Index">班级</a></li>
+    <li><a href="/Students/Index">学生</a></li>
+    <li><a href="/Majors/Index">专业</a></li>
+    <li><a href="/Courses/Index">课程</a></li>
+    <li><a href="/Exams/AllClasses">考试</a></li>
+    <li><a href="/Rollcall/AllList">点名</a></li>
+    <li><a href="/Classtime/AllClasstime">课表</a></li>
+</ul>
 <div id="app">
     <table v-show="coursesList.length" class="table-condensed" border="1">
         <thead class="navbar-header">
@@ -49,12 +58,17 @@
                 axios.get('@Url.Action("Get", "Courses")'
                 ).then(
                     (response) => {
-                        this.coursesList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.coursesList.push(response.data[i]);
-                        }
-                        this.coursesList.push({Id:"",LecturerId:"",LecturerName:"",Name:""});
+                        if (response.data == 0) {
+                            alert("权限不足");
+                        } else {
+                            this.coursesList = [];
+                            for (var i = 0; i < response.data.length; i++) {
+                                this.coursesList.push(response.data[i]);
+                            }
+                            this.coursesList.push({Id:"",LecturerId:"",LecturerName:"",Name:""});
 
+                        }
+                        
                     },
                     (response) => {
                         alert(response.status);
@@ -83,11 +97,10 @@
             addcourses: function (name,lecturer) {
                 axios.post('@Url.Action("Add", "Courses")', { Name:name,LecturerId:lecturer}).then(
                     (response) => {
-                        this.coursesList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.coursesList.push(response.data[i]);
-                        }
-                        this.coursesList.push({ Id: "", LecturerId: "", LecturerName: "", Name: "" });
+                        if (response.data == 0) {
+                            alert("权限不足");
+                        } 
+                        vm.getCourses();
                     },
                     (response) => {
                         alert(response.status);
@@ -99,11 +112,10 @@
             updatecourses: function (id, name, lecturer) {
                 axios.post('@Url.Action("Edit", "Courses")', { Id: id, Name: name, LecturerId: lecturer }).then(
                     (response) => {
-                        this.coursesList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.coursesList.push(response.data[i]);
-                        }
-                        this.coursesList.push({ Id: "", LecturerId: "", LecturerName: "", Name: "" });
+                        if (response.data == 0) {
+                            alert("权限不足");
+                        } 
+                        vm.getCourses();
                         alert("修改成功");
                     },
                     (response) => {
@@ -116,11 +128,10 @@
             deletecourses: function (id) {
                 axios.post('@Url.Action("Del", "Courses")', { Id: id }).then(
                     (response) => {
-                        this.coursesList = [];
-                        for (var i = 0; i < response.data.length; i++) {
-                            this.coursesList.push(response.data[i]);
-                        }
-                        this.coursesList.push({ Id: "", LecturerId: "", LecturerName: "", Name: "" });
+                        if (response.data == 0) {
+                            alert("权限不足");
+                        } 
+                        vm.getCourses();
                         alert("删除成功");
                     },
                     (response) => {

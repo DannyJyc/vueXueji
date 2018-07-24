@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using testxueji.Models;
 
 namespace vuexueji.DAL
 {
-    public class TeachersDAL
+    public class TeachersDal
     {
         public static IEnumerable<Teachers> List()
         {

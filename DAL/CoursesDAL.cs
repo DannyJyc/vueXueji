@@ -1,13 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using testxueji.Models;
 
 namespace vuexueji.DAL
 {
-    public class CoursesDAL
+    public class CoursesDal
     {
+        //public static Courses Single(int id)
+        //{
+        //    using (var db = new XuejiContext())
+        //    {
+        //        var single = db.Courseses.SingleOrDefault(c => c.Id == id);
+        //        return single;
+        //    }
+        //}
+
         public static IEnumerable<CoursesLecturer> List()
         {
             using (var db = new XuejiContext())

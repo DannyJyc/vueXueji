@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using testxueji.Models;
 
 namespace vuexueji.DAL
 {
-    public class ExamsDAL
+    public class ExamsDal
     {
         public static string StringJson(int id)
         {
@@ -17,12 +16,20 @@ namespace vuexueji.DAL
             }
         }
 
-        public static IEnumerable<Exams> List(int id)
+        public static IEnumerable<ExamsList> List(int id)
         {
             var db = new XuejiContext();
             var list = from e in db.Examses
-                       where e.CoursesArrangingId == id
-                       select e;
+                join coursesarranging in db.CoursesArrangings on e.CoursesArrangingId equals coursesarranging.Id
+                join courses in db.Courseses on coursesarranging.CoursesId equals courses.Id
+                where coursesarranging.ClassesId == id
+                       select new ExamsList()
+                       {
+                           Id = e.Id,
+                           Name = e.Name,
+                           TimeStamp = e.TimeStamp,
+                           CoursesName = courses.Name
+                       };
             return list.ToList();
 
         }
