@@ -29,7 +29,7 @@
 
         <div>
             <h3>综合出勤率</h3>
-            <h1>@ViewBag.gross%</h1>
+            <h1>@ViewBag.gross</h1>
         </div>
         <div>
             <h3>每门课的出勤</h3>
@@ -40,7 +40,7 @@
                 </tr>
                 <tr v-for="count in countList">
                     <td>{{count.CoursesName}}</td>
-                    <td>{{count.Count}}%</td>
+                    <td>{{count.Count}}</td>
                 </tr>
             </table>
         </div>

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using testxueji.Models;
 
 namespace vuexueji.DAL
@@ -99,17 +100,17 @@ namespace vuexueji.DAL
         {
             var db = new XuejiContext();
             var list = (from coursesarranging in db.CoursesArrangings
-                       join classes in db.Classeses on coursesarranging.ClassesId equals classes.Id
-                       join majors in db.Majorses on classes.MajorsId equals majors.Id
-                       join courses in db.Courseses on coursesarranging.CoursesId equals courses.Id
-                       where coursesarranging.Id == id
-                       select new CoursesArrangingName
-                       {
-                           ClassesName = classes.Year + majors.Name,
-                           CoursesName = courses.Name,
-                           WeekDays = coursesarranging.WeekDays,
-                           LessonsOrder = coursesarranging.LessonsOrder
-                       }).SingleOrDefault();
+                        join classes in db.Classeses on coursesarranging.ClassesId equals classes.Id
+                        join majors in db.Majorses on classes.MajorsId equals majors.Id
+                        join courses in db.Courseses on coursesarranging.CoursesId equals courses.Id
+                        where coursesarranging.Id == id
+                        select new CoursesArrangingName
+                        {
+                            ClassesName = classes.Year + majors.Name,
+                            CoursesName = courses.Name,
+                            WeekDays = coursesarranging.WeekDays,
+                            LessonsOrder = coursesarranging.LessonsOrder
+                        }).SingleOrDefault();
 
             return list;
         }
@@ -148,6 +149,35 @@ namespace vuexueji.DAL
                                WeekArrangingId = ca.WeekArrangingId,
                                ClassroomId = ca.ClassroomId
                            };
+                //if (item == 1)
+                //{
+                //    var date = DateTime.Now.ToString("yyyy-MM-dd");
+                //    var str = "[";
+                //    foreach (var i in list)
+                //    {
+                //        var rollcalllist = from rollcall in db.Rollcalls
+                //                           join coursesarranging in db.CoursesArrangings on rollcall.CoursesArrangingId equals
+                //                               coursesarranging.Id
+                //                           where coursesarranging.ClassesId == i.ClassesId && coursesarranging.CoursesId == i.CoursesId
+                //                           select new
+                //                           {
+                //                               StudentsStatus = rollcall.StudentState
+                //                           };
+                //        var gross = 0;
+                //        var normal = 0;
+                //        foreach (var n in rollcalllist)
+                //        {
+                //            var temp = JsonConvert.DeserializeObject<List<StudentState>>(n.StudentsStatus);
+                //            foreach (var s in temp)
+                //            {
+                //                normal += Convert.ToInt16(s.State) == 1|| Convert.ToInt16(s.State) == 2 ? 1 : 0;
+                //                gross++;
+                //            }
+                //        }
+                //    }
+
+                //    str += "]";
+                //}
                 return list.ToList();
             }
         }

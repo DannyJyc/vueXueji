@@ -6,9 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="~/Scripts/vue.js"></script>
+    <script src="~/Scripts/axios.js"></script>
     <title>Document</title>
     <style>
-        #divcontent {
+        #divcontent div {
             height: 350px;
             width: 405px;
             margin-left: 50px;
@@ -23,108 +25,157 @@
 
 <body>
     <h2>教师工作台</h2>
+    <div id="divcontent">
+        <div>
+            <h3>课表</h3>
+            <p>这里显示老师所教的课程！(课表将当天老师所教的几门课程置顶)</p>
+            <table border="1" bordercolor="blue" style="border-collapse:collapse;">
+                <tr>
+                    <th>课</th>
+                    <th>班</th>
+                    <th>教室</th>
+                    <th>节</th>
+                </tr>
+                <tr v-for="(n,index) in leList">
+                    <td>{{n.CoursesName}}</td>
+                    <td>
+                        <a href="#" v-on:click="jump(n.Id)">{{n.ClassesName}}({{n.WeekStart}}-{{n.WeekEnd}})</a>
+                    </td>
+                    <td>{{n.ClassroomName}}</td>
+                    <td>{{n.LessonsOrder}}</td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h3>出勤</h3>
+            <p>这里对应左侧的班级进行出勤率的统计</p>
+            <table border="1" bordercolor="blue" style="border-collapse:collapse;">
+                <tr>
+                    <th>班</th>
+                    <th>课</th>
+                    <th>平均</th>
+                </tr>
 
-    <div id="divcontent">
-        <h3>课表</h3>
-        <p>这里显示老师所教的课程！(课表将当天老师所教的几门课程置顶)</p>
-        <table border="1" bordercolor="blue" style="border-collapse:collapse;">
-            <tr>
-                <th>课</th>
-                <th>班</th>
-                <th>教室</th>
-                <th>节</th>
-            </tr>
-            <tr>
-                <td>php</td>
-                <td>
-                    <a href="#">软件高(点击这里对该班级进行点名！)</a>
-                </td>
-                <td>510</td>
-                <td>3</td>
-            </tr>
-            <tr>
-                <td>php</td>
-                <td>
-                    <a href="#">软件初</a>
-                </td>
-                <td>507</td>
-                <td>4</td>
-            </tr>
-        </table>
+                <tr v-for="count in countList">
+                    <td>{{count.ClassName}}</td>
+                    <td>{{count.CoursName}}</td>
+                    <td>{{count.Count}}</td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h3>考试/成绩/(通知)</h3>
+            <p>这里显示考试的信息！以及通知/提醒考试！考试时间分别在9.10/18.19周，并且考试的前一周在提醒考试部分提醒教师复习！</p>
+            <table border="1" bordercolor="blue" style="border-collapse:collapse;">
+                <tr>
+                    <th>考试时间</th>
+                    <th>考试名称</th>
+                    <th>考试科目</th>
+                    <th>考试班级</th>
+                    @*<th>上传卷纸</th>*@
+                </tr>
+                @foreach (var i in ViewBag.exams)
+                {
+                    <tr>
+                        <td>@i.TimeStamp</td>
+                        <td><a href="/Exams/List/@i.ClassesId"></a>@i.Name</td>
+                        <td>@i.CoursesName</td>
+                        <td>@i.ClassesName</td>
+                    </tr>
+                }
+                @*<tr>
+                        <td>
+                            <font style="color:yellow;">2018-6-15 09:31:13(提醒考试的时间颜色！并置顶！)</font>
+                        </td>
+                        <td>php</td>
+                        <td>软件高</td>
+                        <td>
+                            <button>上传</button>(快到考试时间的考试会启用上传按钮！)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <font style="color:green;">2018-7-12 09:31:52</font>
+                        </td>
+                        <td>php</td>
+                        <td>软件初</td>
+                        <td>
+                            <button disabled="disabled">上传</button>(其余考试时间没到提醒范围的考试会禁用上传按钮！)
+                        </td>
+                    </tr>*@
+            </table>
+        </div>
+        @*<div id="divcontent" style="height:auto;">
+                <h4>备注：</h4>
+                <p>在Controllers进行对数据的查询！ViewBag 传到视图遍历数据！</p>
+                <p>var List = from ta in context.表</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;select ta;</p>
+                <p>ViewBag.表 = List.ToList();</p>
+                <hr>
+                <p>视图：</p>
+                <p>foreach (var temp in ViewBag.sellist)</p>
+                <p>{</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;输出表的字段！</p>
+                <p>}</p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </div>*@
     </div>
-    <div id="divcontent">
-        <h3>出勤</h3>
-        <p>这里对应左侧的班级进行出勤率的统计</p>
-        <table border="1" bordercolor="blue" style="border-collapse:collapse;">
-            <tr>
-                <th>平均</th>
-                <th>上周</th>
-                <th>本节课</th>
-            </tr>
-            <tr>
-                <td>80%</td>
-                <td>90%</td>
-                <td>
-                    100%(这里对应左侧老师所教课程的本节课的出勤率在点完名后会返回到本页面并显示出本节课的出勤率反之显示("
-                    <font style="color:grey;">未点</font>"))
-                </td>
-            </tr>
-            <tr>
-                <td>80%</td>
-                <td>85%</td>
-                <td>90%</td>
-            </tr>
-        </table>
-    </div>
-    <div id="divcontent">
-        <h3>考试/成绩/(通知)</h3>
-        <p>这里显示考试的信息！以及通知/提醒考试！考试时间分别在9.10/18.19周，并且考试的前一周在提醒考试部分提醒教师复习！</p>
-        <table border="1" bordercolor="blue" style="border-collapse:collapse;">
-            <tr>
-                <th>考试时间</th>
-                <th>考试科目</th>
-                <th>考试班级</th>
-                <th>上传卷纸</th>
-            </tr>
-            <tr>
-                <td>
-                    <font style="color:yellow;">2018-6-15 09:31:13(提醒考试的时间颜色！并置顶！)</font>
-                </td>
-                <td>php</td>
-                <td>软件高</td>
-                <td>
-                    <button>上传</button>(快到考试时间的考试会启用上传按钮！)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <font style="color:green;">2018-7-12 09:31:52</font>
-                </td>
-                <td>php</td>
-                <td>软件初</td>
-                <td>
-                    <button disabled="disabled">上传</button>(其余考试时间没到提醒范围的考试会禁用上传按钮！)
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div id="divcontent" style="height:auto;">
-        <h4>备注：</h4>
-        <p>在Controllers进行对数据的查询！ViewBag 传到视图遍历数据！</p>
-        <p>var List = from ta in context.表</p>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;select ta;</p>
-        <p>ViewBag.表 = List.ToList();</p>
-        <hr>
-        <p>视图：</p>
-        <p>foreach (var temp in ViewBag.sellist)</p>
-        <p>{</p>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;输出表的字段！</p>
-        <p>}</p>
-        <p></p>
-        <p></p>
-        <p></p>
-    </div>
+    <script type="text/javascript">
+    var vm = new Vue({
+        el: "#divcontent",
+        data: {
+            countList: [],
+            leList: []
+        },
+        mounted() {
+            this.getAllcount(),
+            this.getAll();
+        },
+        methods: {
+            getAll: function () {
+                axios.get('@Url.Action("Get", "Rollcall")'
+                ).then(
+                    (response) => {
+                        this.leList = [];
+                        for (var i = 0; i < response.data.length; i++) {
+                            this.leList.push(response.data[i]);
+                        }
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },getAllcount: function () {
+                axios.get('@Url.Action("LecturerScore", "Desk")'
+                ).then(
+                    (response) => {
+                        this.countList = [];
+                        var dataObj = eval("(" + response.data + ")");
+                        for (var i = 0; i < dataObj.length; i++) {
+                            this.countList.push(dataObj[i]);
+                        }
 
+
+                    },
+                    (response) => {
+                        alert(response.status);
+                    }
+                ).catch(function (response) {
+                    alert(response);
+                });
+            },
+            jump: function (id) {
+                window.location.href ='/Rollcall/Addrollcall/'+id;
+            }
+        }
+
+    });
+
+    </script>
 </body>
 
 </html>

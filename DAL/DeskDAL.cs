@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ namespace vuexueji.DAL
     {
         //Count
         //rollcall表‘0’第一次点点名时未在标识‘1’正常 ‘2’为迟到标识 ‘3’第二次旷课标识
-        public static double GrossCount(int id)
+        public static string GrossCount(int id)
         {
             var db = new XuejiContext();
             var single = db.Studentses.SingleOrDefault(s => s.Id == id);
@@ -35,7 +36,55 @@ namespace vuexueji.DAL
 
             }
 
-            return (normal / gross)*100;
+            return ((double)normal / gross).ToString("P");
+        }
+
+        public static string TeachersCount(int id)
+        {
+            var db = new XuejiContext();
+            var single = db.Lectureres.SingleOrDefault(l => l.Id == id);
+            var list = (from rollcall in db.Rollcalls
+                        join coursesarranging in db.CoursesArrangings on rollcall.CoursesArrangingId equals coursesarranging.Id
+                        join classes in db.Classeses on coursesarranging.ClassesId equals classes.Id
+                        join majors in db.Majorses on classes.MajorsId equals majors.Id
+                        join courses in db.Courseses on coursesarranging.CoursesId equals courses.Id
+                        where rollcall.Name == single.Name
+                        select new
+                        {
+                            ClassName = classes.Year + majors.Name,
+                            CoursName = courses.Name,
+                            ClassesId = classes.Id,
+                            CoursesId = courses.Id
+                        }).Distinct();
+            var str = "[";
+            foreach (var i in list)
+            {
+                var rollcalllist = from rollcall in db.Rollcalls
+                                   join coursesarranging in db.CoursesArrangings on rollcall.CoursesArrangingId equals coursesarranging
+                                       .Id
+                                   where coursesarranging.ClassesId == i.ClassesId && coursesarranging.CoursesId == i.CoursesId
+                                   select new
+                                   {
+                                       StudentState = rollcall.StudentState
+                                   };
+                int gross = 0;
+                int normal = 0;
+                foreach (var n in rollcalllist)
+                {
+                    var temp = JsonConvert.DeserializeObject<List<StudentState>>(n.StudentState);
+                    foreach (var s in temp)
+                    {
+                        gross++;
+                        normal += Convert.ToInt16(s.State) == 2 || Convert.ToInt16(s.State) == 1 ? 1 : 0;
+                    }
+                }
+
+                var item = ((double)normal / gross).ToString("P");
+                str += str == "[" ? "{\"ClassName\":\"" + i.ClassName + "\",\"CoursName\":\"" + i.CoursName + "\",\"Count\":\"" + item + "\"}" : ",{\"ClassName\":\"" + i.ClassName + "\",\"CoursName\":\"" + i.CoursName + "\",\"Count\":\"" + item + "\"}";
+
+            }
+            str += "]";
+            return str;
         }
 
         public static string Count(int id)
@@ -44,14 +93,14 @@ namespace vuexueji.DAL
             var single = db.Studentses.SingleOrDefault(s => s.Id == id);
             int classesId = single.ClassesId;
             var list = (from rollcall in db.Rollcalls
-                join coursesarranging in db.CoursesArrangings on rollcall.CoursesArrangingId equals coursesarranging.Id
-                where coursesarranging.ClassesId == classesId
-                //group coursesarranging by coursesarranging.CoursesId
-                //into courses
-                select new
-                {
-                    coursesId = coursesarranging.CoursesId
-                }).Distinct();
+                        join coursesarranging in db.CoursesArrangings on rollcall.CoursesArrangingId equals coursesarranging.Id
+                        where coursesarranging.ClassesId == classesId
+                        //group coursesarranging by coursesarranging.CoursesId
+                        //into courses
+                        select new
+                        {
+                            coursesId = coursesarranging.CoursesId
+                        }).Distinct();
             var str = "[";
             foreach (var i in list)
             {
@@ -59,12 +108,12 @@ namespace vuexueji.DAL
                 int normal = 0;
                 int coursesId = i.coursesId;
                 var countlist = from rollcall in db.Rollcalls
-                    join coursesarranging in db.CoursesArrangings on rollcall.CoursesArrangingId equals coursesarranging.Id
-                    where coursesarranging.ClassesId == classesId&&coursesarranging.CoursesId==coursesId
-                    select new
-                    {
-                        studentstate = rollcall.StudentState
-                    };
+                                join coursesarranging in db.CoursesArrangings on rollcall.CoursesArrangingId equals coursesarranging.Id
+                                where coursesarranging.ClassesId == classesId && coursesarranging.CoursesId == coursesId
+                                select new
+                                {
+                                    studentstate = rollcall.StudentState
+                                };
                 foreach (var n in countlist)
                 {
                     gross++;
@@ -76,7 +125,7 @@ namespace vuexueji.DAL
                 }
 
                 var CoursesName = db.Courseses.SingleOrDefault(c => c.Id == coursesId);
-                str += str == "[" ? "{\"CoursesName\":\"" + CoursesName.Name + "\",\"Count\":\"" + normal / gross*100 + "\"}" : ",{\"CoursesName\":\"" + CoursesName.Name + "\",\"Count\":\"" + normal / gross*100 + "\"}";
+                str += str == "[" ? "{\"CoursesName\":\"" + CoursesName.Name + "\",\"Count\":\"" + (normal / (double)gross).ToString("P") + "\"}" : ",{\"CoursesName\":\"" + CoursesName.Name + "\",\"Count\":\"" + ((double)normal / (double)gross).ToString("P") + "\"}";
 
             }
             str += "]";
@@ -89,16 +138,16 @@ namespace vuexueji.DAL
             var single = db.Studentses.SingleOrDefault(s => s.Id == id);
             int classesId = single.ClassesId;
             var list = from exams in db.Examses
-                join coursesarranging in db.CoursesArrangings on exams.CoursesArrangingId equals coursesarranging.Id
-                join courses in db.Courseses on coursesarranging.CoursesId equals courses.Id
-                where coursesarranging.ClassesId == classesId
-                select new ExamsList()
-                {
-                    TimeStamp = exams.TimeStamp,
-                    Name = exams.Name,
-                    CoursesName = courses.Name,
-                    StudentScore = exams.StudentScore
-                };
+                       join coursesarranging in db.CoursesArrangings on exams.CoursesArrangingId equals coursesarranging.Id
+                       join courses in db.Courseses on coursesarranging.CoursesId equals courses.Id
+                       where coursesarranging.ClassesId == classesId
+                       select new ExamsList()
+                       {
+                           TimeStamp = exams.TimeStamp,
+                           Name = exams.Name,
+                           CoursesName = courses.Name,
+                           StudentScore = exams.StudentScore
+                       };
             var str = "[";
             foreach (var i in list)
             {
@@ -109,7 +158,7 @@ namespace vuexueji.DAL
                     Score = n.StudentsId == id ? n.Score : -1;
                     if (Score != 0 || Score != -1) break;
                 }
-                str += str == "[" ? "{\"TimeStamp\":\"" + i.TimeStamp +"\",\"Name\":\"" + i.Name + "\",\"CoursesName\":\"" + i.CoursesName +"\",\"Score\":\"" + Score + "\"}" : ",{\"TimeStamp\":\"" + i.TimeStamp + "\",\"Name\":\"" + i.Name + "\",\"CoursesName\":\"" + i.CoursesName + "\",\"Score\":\"" + Score + "\"}";
+                str += str == "[" ? "{\"TimeStamp\":\"" + i.TimeStamp + "\",\"Name\":\"" + i.Name + "\",\"CoursesName\":\"" + i.CoursesName + "\",\"Score\":\"" + Score + "\"}" : ",{\"TimeStamp\":\"" + i.TimeStamp + "\",\"Name\":\"" + i.Name + "\",\"CoursesName\":\"" + i.CoursesName + "\",\"Score\":\"" + Score + "\"}";
 
             }
 
@@ -117,19 +166,39 @@ namespace vuexueji.DAL
             return str;
         }
 
+        public static IEnumerable Exams(int id)
+        {
+            var db = new XuejiContext();
+            var list = from exams in db.Examses
+                       join coursesarranging in db.CoursesArrangings on exams.CoursesArrangingId equals coursesarranging.Id
+                       join classes in db.Classeses on coursesarranging.ClassesId equals classes.Id
+                       join majors in db.Majorses on classes.MajorsId equals majors.Id
+                       join courses in db.Courseses on coursesarranging.CoursesId equals courses.Id
+                       where courses.LecturerId == id
+                       select new ExamsList()
+                       {
+                           ClassesId = classes.Id,
+                           TimeStamp = exams.TimeStamp,
+                           Name = exams.Name,
+                           CoursesName = courses.Name,
+                           ClassesName = classes.Year + majors.Name
+                       };
+            return list;
+        }
+
         public static int[] Check(int id)
         {
-            
+
             var db = new XuejiContext();
             var single = db.Studentses.SingleOrDefault(s => s.Id == id);
             int classesId = single.ClassesId;
             var list = from rollcall in db.Rollcalls
-                join coursesarranging in db.CoursesArrangings on rollcall.CoursesArrangingId equals coursesarranging.Id
-                where coursesarranging.ClassesId == classesId
-                select new
-                {
-                    studentstate = rollcall.StudentState
-                };
+                       join coursesarranging in db.CoursesArrangings on rollcall.CoursesArrangingId equals coursesarranging.Id
+                       where coursesarranging.ClassesId == classesId
+                       select new
+                       {
+                           studentstate = rollcall.StudentState
+                       };
             int gross = 0;
             int cut = 0;//3
             int late = 0;//2
@@ -145,7 +214,7 @@ namespace vuexueji.DAL
 
             }
 
-            int[] check=new int[3];
+            int[] check = new int[3];
             check[0] = gross;
             check[1] = cut;
             check[2] = late;

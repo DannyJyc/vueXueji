@@ -35,6 +35,9 @@ namespace testxueji.Models
         public string Name { get; set; }
         public DateTime TimeStamp { get; set; }
         public string CoursesName { get; set; }
+        public string ClassesName { get; set; }
         public string StudentScore { get; set; }
+
+        public int ClassesId { get; set; }
     }
 }
