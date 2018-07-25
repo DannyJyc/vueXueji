@@ -49,7 +49,7 @@ namespace vuexueji.Controllers
                             Session["Name"] = teachers.Name;
                         }
 
-                        temp = "1";
+                        temp = power == "1" ? "1" : "t";
                         break;;
                     case "l":
                         var lecturer = db.Lectureres.SingleOrDefault(l=>l.UserName==username);
@@ -59,7 +59,7 @@ namespace vuexueji.Controllers
                             Session["Id"] = lecturer.Id;
                             Session["Name"] = lecturer.Name;
                         }
-                        temp = "1";
+                        temp = "l";
 
                         break;
                     case "s":
@@ -70,7 +70,7 @@ namespace vuexueji.Controllers
                             Session["Id"] = student.Id;
                             Session["Name"] = student.Name;
                         }
-                        temp = "1";
+                        temp = "s";
 
                         break;
                     default:

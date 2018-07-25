@@ -35,7 +35,12 @@
                                 success: function (data) {
                                     if (data == "1") {
                                         window.location.href ='/Students/Index/';
-                                    } else {
+                                    } else if (data == "l") {
+                                        window.location.href = '/Desk/Teachers';
+                                    } else if (data == "s") {
+                                        window.location.href = '/Desk/Students';
+                                    }
+                                    else {
                                         alert("ero!");
                                     }
                                 }

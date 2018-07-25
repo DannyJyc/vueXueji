@@ -74,7 +74,6 @@ c:\users\dannyjiang\source\repos\vuexueji\vuexueji\bin\zh-Hans\System.Web.Webpag
 c:\users\dannyjiang\source\repos\vuexueji\vuexueji\bin\zh-Hans\System.Web.Webpages.Razor.resources.dll
 c:\users\dannyjiang\source\repos\vuexueji\vuexueji\bin\zh-Hans\System.Web.Helpers.resources.dll
 c:\users\dannyjiang\source\repos\vuexueji\vuexueji\bin\zh-Hans\System.Web.Mvc.resources.dll
-c:\users\dannyjiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.csprojAssemblyReference.cache
 c:\users\dannyjiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.csproj.CoreCompileInputs.cache
 c:\users\dannyjiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.csproj.CopyComplete
 c:\users\dannyjiang\source\repos\vuexueji\vuexueji\obj\Debug\vuexueji.dll
