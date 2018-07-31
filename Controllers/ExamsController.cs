@@ -13,6 +13,11 @@ namespace vuexueji.Controllers
             ViewBag.students = RollcallDal.StudentsList(id);
             return View();
         }
+
+        public ActionResult Edit(ExamsBox studentscore)
+        {
+            return Content(ExamsDal.Edit(studentscore));
+        }
         /// <summary>
         /// 
         /// </summary>

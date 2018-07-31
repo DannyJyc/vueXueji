@@ -1,23 +1,74 @@
 ﻿<script src="~/Scripts/vue.js"></script>
 <script src="~/Scripts/axios.js"></script>
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+
 <style type="text/css">
     table {
         margin: 10px auto auto 10px;
     }
 </style>
 <div id="app">
-    <table v-show="studentsList.length" class="table-condensed" border="1">
+    <table v-show="studentsList.length" id="tbone" class="table-condensed" border="1">
         <thead class="navbar-header">
             <tr>
                 <th>姓名</th>
                 <th>分数</th>
             </tr>
             <tr v-for="(students,index) in studentsList">
-                <td><input type="text" v-model="students.StudentsId" /></td>
+                <td>
+                    <input type="hidden" v-model="students.StudentsId" />
+                    <input type="text" v-model="students.StudentsName" />
+                </td>
                 <td><input type="text" v-model="students.Score" /></td>
         </thead>
     </table>
+    <button onclick="students()">add</button>
 </div>
+<script>
+    function students() {
+        var name = "";
+        var score = "";
+
+        var getTable = document.getElementById("tbone");
+        var tableTr = getTable.getElementsByTagName("tr");
+        // var trTd = tableTr.getElementsByTagName("td");
+        for(var i = 1;i<tableTr.length;i++){
+            var trTd = tableTr[i].getElementsByTagName("td");
+            //alert(trTd);
+            for(var n = 0;n<trTd.length;n++){
+                var inputCount = trTd[n].getElementsByTagName("input");
+
+                switch(inputCount.length){
+                //case 0:
+
+                //        name += name == "" ? trTd[n].innerText : "," + trTd[n].innerText;
+                //    break;
+                case 1:
+                        score += score == "" ? inputCount[0].value : "," + inputCount[0].value;
+                    break;
+                    default:
+                        name += name == "" ? inputCount[0].value : "," + inputCount[0].value;
+                    break;
+                }
+            }
+        }
+        $.ajax({
+            type: 'post',
+            url: '/Exams/Edit',
+            data: { StudentsId: name, Score: score,Id:@ViewBag.id },
+            success: function (data) {
+                if (data == "1") {
+                    alert("操作成功");
+
+                } else {
+                    alert("ero!");
+                }
+            }
+        });
+    }
+
+
+</script>
 <script type="text/javascript">
     var vm = new Vue({
         el: "#app",

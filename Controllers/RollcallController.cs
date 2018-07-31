@@ -35,7 +35,13 @@ namespace vuexueji.Controllers
         public ActionResult Addrollcall(StudentState sr)
         {
             
-            return Content(RollcallDal.StudentsStatus(sr, Convert.ToInt16(Session["tempid"])));
+            return Content(RollcallDal.StudentsStatus(sr, Convert.ToInt16(Session["tempid"]), Convert.ToString(Session["Name"])));
+        }
+
+        [HttpPost]
+        public ActionResult Editrollcall(StudentState sr)
+        {
+            return Content(RollcallDal.EditStudentsStatus(sr));
         }
 
         public ActionResult ListRollcall()

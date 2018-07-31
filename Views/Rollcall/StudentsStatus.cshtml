@@ -1,28 +1,100 @@
 ﻿@using vuexueji.DAL
 <script src="~/Scripts/vue.js"></script>
 <script src="~/Scripts/axios.js"></script>
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+
 <style type="text/css">
     table {
         margin: 10px auto auto 10px;
     }
 </style>
 <div id="app">
-    <table v-show="studentsList.length" class="table-condensed" border="1">
+    <table v-show="studentsList.length" id="tbone" class="table-condensed" border="1">
         <thead class="navbar-header">
-        <tr>
-            <th>姓名</th>
-            <th>操作</th>
-        </tr>
-        <tr v-for="(students,index) in studentsList">
-        <td>
-            <input type="hidden" v-model="students.StudentsId" />
-            <input type="text" v-model="students.StudentsName"/>
-        </td>
-        <td><input type="text" v-model="students.State" /></td>
-
+            <tr>
+                <th>姓名</th>
+                <th>操作</th>
+            </tr>
+            <tr v-for="(students,index) in studentsList">
+                <td>
+                    <input type="hidden" v-model="students.StudentsId" />
+                    <input type="text" v-model="students.StudentsName" />
+                </td>
+                @*<td><input type="text" v-model="students.State" /></td>*@
+                <td>
+                    <div v-if="students.State == 1">
+                        <input type="radio" checked="checked" v-model="students.State" value="1">
+                        <span>正常</span>
+                    </div>
+                    <div v-else>
+                        <input type="radio" v-model="students.State" value="2">
+                        <label>迟到</label>
+                        &nbsp;
+                        <input type="radio" v-model="students.State" value="3">
+                        <label>旷课</label><br />
+                    </div>
+                </td>
         </thead>
     </table>
+    <button onclick="students()">add</button>
+
 </div>
+<script>
+    function students() {
+        var name = "";
+        var status = "";
+
+        var getTable = document.getElementById("tbone");
+        var tableTr = getTable.getElementsByTagName("tr");
+        // var trTd = tableTr.getElementsByTagName("td");
+        for(var i = 1;i<tableTr.length;i++){
+            var trTd = tableTr[i].getElementsByTagName("td");
+            //alert(trTd);
+            for(var n = 0;n<trTd.length;n++){
+                var inputCount = trTd[n].getElementsByTagName("input");
+
+                switch(inputCount.length){
+                //case 0:
+
+                //        name += name == "" ? trTd[n].innerText : "," + trTd[n].innerText;
+                //    break;
+                case 1:
+                        status += status == "" ? inputCount[0].value : "," + inputCount[0].value;
+                    break;
+                    default:
+                        var studentsId = trTd[n].getElementsByTagName("input");
+                        if (studentsId[0].type == "hidden") {
+                            name += name == "" ? studentsId[0].value : "," + studentsId[0].value;
+                        } else {
+                            for (var x = 0; x < inputCount.length; x++){
+                                
+                                if (inputCount[x].checked) {
+                                    status += status == "" ? inputCount[x].value : "," + inputCount[x].value;
+                                }
+                            }
+                        }
+
+                    break;
+                }
+            }
+        }
+        $.ajax({
+            type: 'post',
+            url: '/Rollcall/Editrollcall',
+            data: { StudentsId: name, State: status,Id:@ViewBag.id },
+            success: function (data) {
+                if (data == "1") {
+                    alert("操作成功");
+
+                } else {
+                    alert("ero!");
+                }
+            }
+        });
+    }
+
+
+</script>
 <script type="text/javascript">
     var vm = new Vue({
         el: "#app",

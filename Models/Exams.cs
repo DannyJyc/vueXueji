@@ -22,6 +22,7 @@ namespace testxueji.Models
 
     public class ExamsBox
     {
+        public int Id { get; set; }
         public int CoursesArrangingId { get; set; }
         public string Examsname { get; set; }
         public DateTime Examstime { get; set; }

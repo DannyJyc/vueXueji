@@ -36,7 +36,7 @@ namespace vuexueji.DAL
             return list.ToList();
         }
 
-        public static string StudentsStatus(StudentState studentState, int id)
+        public static string EditStudentsStatus(StudentState studentState)
         {
             var name = studentState.StudentsId;
             var state = studentState.State;
@@ -50,7 +50,33 @@ namespace vuexueji.DAL
                 {
                     var studentsid = Convert.ToInt16(namearr[i]);
                     var single = db.Studentses.SingleOrDefault(s => s.Id == studentsid);
-                    str += str == "[" ? "{\"StudentsId\":\"" + namearr[i] + "\",\"StudentsName\":\"" + single.Name + "\",\"State\":\"" + statuearr[i] + "\"}" : ",{\"StudentsId\":\"" + namearr[i] + "\",\"StudentsName\":\"" + single.Name + "\",\"State\":\"" + statuearr[i] + "\"}";
+                    str += str == "[" ? "{\"Id\":\"" + i + "\",\"StudentsId\":\"" + namearr[i] + "\",\"StudentsName\":\"" + single.Name + "\",\"State\":\"" + statuearr[i] + "\"}" : ",{\"Id\":\"" + i + "\",\"StudentsId\":\"" + namearr[i] + "\",\"StudentsName\":\"" + single.Name + "\",\"State\":\"" + statuearr[i] + "\"}";
+                }
+                str += "]";//后更换stringbuilder
+                var singlerollcall = db.Rollcalls.SingleOrDefault(r => r.Id == studentState.Id);
+                if (singlerollcall != null) singlerollcall.StudentState = str;
+                db.SaveChanges();
+
+            }
+
+            return "1";
+        }
+
+        public static string StudentsStatus(StudentState studentState, int id,string handlers)
+        {
+            var name = studentState.StudentsId;
+            var state = studentState.State;
+            var namearr = name.Split(',');
+            var statuearr = state.Split(',');
+            using (var db = new XuejiContext())
+            {
+                var str = "[";
+
+                for (var i = 0; i < namearr.Length; i++)
+                {
+                    var studentsid = Convert.ToInt16(namearr[i]);
+                    var single = db.Studentses.SingleOrDefault(s => s.Id == studentsid);
+                    str += str == "[" ? "{\"Id\":\"" + i + "\",\"StudentsId\":\"" + namearr[i] + "\",\"StudentsName\":\"" + single.Name + "\",\"State\":\"" + statuearr[i] + "\"}" : ",{\"Id\":\"" + i + "\",\"StudentsId\":\"" + namearr[i] + "\",\"StudentsName\":\"" + single.Name + "\",\"State\":\"" + statuearr[i] + "\"}";
                 }
                 str += "]";//后更换stringbuilder
 
@@ -59,7 +85,7 @@ namespace vuexueji.DAL
                     CoursesArrangingId = id,
                     StudentState = str,
                     CreateTime = DateTime.Now,
-                    Name = "庄德鑫"//从控制器用session传递参数到这个方法
+                    Name = handlers//从控制器用session传递参数到这个方法
 
                 };
                 db.Rollcalls.Add(rollcall);

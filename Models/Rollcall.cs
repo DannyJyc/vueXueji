@@ -15,6 +15,7 @@ namespace testxueji.Models
 
     public class StudentState
     {
+        public int Id { get; set; }
         public string StudentsId { get; set; }
         public string StudentsName { get; set; }
         public string State { get; set; }
