@@ -6,6 +6,7 @@ namespace vuexueji.DAL
 {
     public class ClassesDal
     {
+
         public static IEnumerable<ClassesMajorsTeachers> List()
         {
             using (var db = new XuejiContext())

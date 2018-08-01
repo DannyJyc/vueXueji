@@ -8,11 +8,19 @@ namespace vuexueji.Controllers
     {
         // GET: Students
 
+        /// <summary>
+        /// 返回到学生（Students）的主页
+        /// </summary>
+        /// <returns>返回视图</returns>
         public ActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// 获取所有学生（Students）信息
+        /// </summary>
+        /// <returns>返回json格式的学生（students）信息</returns>
         public JsonResult Get()
         {
             if ((string)Session["Power"] != "1") return Json("0");
@@ -25,6 +33,11 @@ namespace vuexueji.Controllers
         //    return Content(StudentsDAL.SingleName(id));
         //}
 
+        /// <summary>
+        /// 为学生（Students）新增一条记录
+        /// </summary>
+        /// <param name="s">类型 Students</param>
+        /// <returns>返回json格式的学生（students）信息</returns>
         [HttpPost]
         public JsonResult Add(Students s)
         {
@@ -32,6 +45,12 @@ namespace vuexueji.Controllers
             StudentsDal.Add(s);
             return Json(StudentsDal.List());
         }
+
+        /// <summary>
+        /// 为对应Students Id的学生信息进行修改
+        /// </summary>
+        /// <param name="s">类型 Students</param>
+        /// <returns>返回json格式的学生（students）信息</returns>
         [HttpPost]
         public JsonResult Edit(Students s)
         {
@@ -42,6 +61,11 @@ namespace vuexueji.Controllers
 
         }
 
+        /// <summary>
+        /// 将对应StudentsId 的记录删除
+        /// </summary>
+        /// <param name="id">类型int，StudentsId</param>
+        /// <returns>返回json格式的学生（students）信息</returns>
         [HttpPost]
         public JsonResult Delete(int id)
         {
