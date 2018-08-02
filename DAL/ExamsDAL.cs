@@ -7,6 +7,11 @@ namespace vuexueji.DAL
 {
     public class ExamsDal
     {
+        /// <summary>
+        /// 返回对应examsID的学生考试信息的json字符串
+        /// </summary>
+        /// <param name="id">类型 int，examsID</param>
+        /// <returns>对应examsID的学生考试信息的json字符串</returns>
         public static string StringJson(int id)
         {
             using (var db = new XuejiContext())
@@ -16,6 +21,11 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 列出对应班级的所有考试信息
+        /// </summary>
+        /// <param name="id">类型 int，classesID</param>
+        /// <returns>返回对应classesID的所有考试信息</returns>
         public static IEnumerable<ExamsList> List(int id)
         {
             var db = new XuejiContext();
@@ -34,6 +44,11 @@ namespace vuexueji.DAL
 
         }
 
+        /// <summary>
+        /// 为exams表修改一条记录
+        /// </summary>
+        /// <param name="eb">类型 Examsbox中id 供exams修改对应数据</param>
+        /// <returns>返回字符串“1”为修改成功</returns>
         public static string Edit(ExamsBox eb)
         {
             var name = eb.StudentsId;
@@ -63,6 +78,11 @@ namespace vuexueji.DAL
             return "1";
         }
 
+        /// <summary>
+        /// 为exams新增一条记录
+        /// </summary>
+        /// <param name="eb">类型examsbox，供exams新增记录</param>
+        /// <returns>返回字符串“1”为新增成功</returns>
         public static string Add(ExamsBox eb)
         {
             var name = eb.StudentsId;

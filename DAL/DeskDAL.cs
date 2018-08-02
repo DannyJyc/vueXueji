@@ -11,6 +11,11 @@ namespace vuexueji.DAL
     {
         //Count
         //rollcall表‘0’第一次点点名时未在标识‘1’正常 ‘2’为迟到标识 ‘3’第二次旷课标识
+        /// <summary>
+        /// 返回对应学生id的总出勤率
+        /// </summary>
+        /// <param name="id">类型 int，StudentsID</param>
+        /// <returns>对应学生的总出勤率</returns>
         public static string GrossCount(int id)
         {
             var db = new XuejiContext();
@@ -39,6 +44,11 @@ namespace vuexueji.DAL
             return ((double)normal / gross).ToString("P");
         }
 
+        /// <summary>
+        /// 返回对应老师所教班级的出勤率
+        /// </summary>
+        /// <param name="id">类型 int，LecturerID</param>
+        /// <returns>返回对应老师所教班级的出勤率（json字符串）</returns>
         public static string TeachersCount(int id)
         {
             var db = new XuejiContext();
@@ -87,6 +97,11 @@ namespace vuexueji.DAL
             return str;
         }
 
+        /// <summary>
+        /// 返回对应学生所上课程和对应的出勤率
+        /// </summary>
+        /// <param name="id">类型 int，StudentsID</param>
+        /// <returns>返回对应学生id所上的课和出勤率（json字符串）</returns>
         public static string Count(int id)
         {
             var db = new XuejiContext();
@@ -131,7 +146,11 @@ namespace vuexueji.DAL
             str += "]";
             return str;
         }
-
+        /// <summary>
+        /// 返回对应学生的所有考试信息
+        /// </summary>
+        /// <param name="id">类型 int，StudentsID</param>
+        /// <returns>返回对应学生id的所有考试信息（json字符串）</returns>
         public static string Score(int id)
         {
             var db = new XuejiContext();
@@ -166,6 +185,11 @@ namespace vuexueji.DAL
             return str;
         }
 
+        /// <summary>
+        /// 返回老师所教课程的所有考试信息
+        /// </summary>
+        /// <param name="id">类型 int，LecturerID<</param>
+        /// <returns>返回对应Lecturerid所教课程的所有考试信息</returns>
         public static IEnumerable Exams(int id)
         {
             var db = new XuejiContext();
@@ -186,6 +210,11 @@ namespace vuexueji.DAL
             return list;
         }
 
+        /// <summary>
+        /// 返回对应学生的总出勤，旷课，迟到次数
+        /// </summary>
+        /// <param name="id">类型 int，StudentsID</param>
+        /// <returns>对应学生的总出勤，旷课，迟到次数（int[]）</returns>
         public static int[] Check(int id)
         {
 

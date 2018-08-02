@@ -5,6 +5,12 @@ namespace vuexueji.DAL
 {
     public class UserDal
     {
+        /// <summary>
+        /// 输入用户名密码判断其职能
+        /// </summary>
+        /// <param name="username">类型 string，用户名</param>
+        /// <param name="password">类型 string，密码</param>
+        /// <returns>返回字符串“0”密码错误“1”领导“t”导员“s”学生“l(L)”讲师</returns>
         public static string UserPower(string username, string password)
         {
             var item ="0";
@@ -35,6 +41,15 @@ namespace vuexueji.DAL
             return item;
         }
 
+        /// <summary>
+        /// 注册，判断是否姓名/用户名是否重名
+        /// </summary>
+        /// <param name="name">类型 string，姓名</param>
+        /// <param name="username">类型 string，用户名</param>
+        /// <param name="telephone">类型 string，电话</param>
+        /// <param name="power">类型 string，职能（“1”领导“t”导员“s”学生“l(L)”讲师）</param>
+        /// <param name="password">类型 string，密码</param>
+        /// <returns>返回字符串“0”异常“name”姓名重名“username”用户名重名“ok”注册成功“ero”出错</returns>
         public static string Register(string name, string username, string telephone,string power, string password)
         {
             var item = "0";

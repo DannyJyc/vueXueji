@@ -7,6 +7,12 @@ namespace vuexueji.DAL
 {
     public class ClasstimeDal
     {
+        /// <summary>
+        /// 添加一个学期（weekarranging）
+        /// </summary>
+        /// <param name="start">类型 string，开始时间</param>
+        /// <param name="end">类型 string，结束时间</param>
+        /// <returns>返回字符串 “1” 即添加成功</returns>
         public static string AddWeekarranging(string start, string end)
         {
             DateTime datestart, dateend;
@@ -44,6 +50,12 @@ namespace vuexueji.DAL
             return "1";
         }
 
+        /// <summary>
+        /// 计算输入当前时间属于该年第几周
+        /// </summary>
+        /// <param name="startweek">类型 ref int，想要输出的星期数</param>
+        /// <param name="days">类型 int，当前时间到目前为止的天数</param>
+        /// <param name="years">类型 int，当前年份</param>
         private static void Week(ref int startweek, int days, int years)
         {
             string[] weekdays = { "7", "1", "2", "3", "4", "5", "6" };
@@ -58,7 +70,10 @@ namespace vuexueji.DAL
                 days -= 7;
             }
         }
-
+        /// <summary>
+        /// 修改一条课程具体信息
+        /// </summary>
+        /// <param name="coursesarranging">类型CoursesArranging 中的Id 以供修改记录</param>
         public static void Edit(CoursesArranging coursesarranging)
         {
             using (var db = new XuejiContext())
@@ -80,6 +95,10 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 为课程新增一条记录（CoursesArranging）
+        /// </summary>
+        /// <param name="ca">类型Coursesarranging 以供新增记录</param>
         public static void Add(CoursesArranging ca)
         {
             using (var db = new XuejiContext())
@@ -100,6 +119,10 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 返回所有教室门牌号的
+        /// </summary>
+        /// <returns>返回类型IEnumerable<Classroom>的所有数据</returns>
         public static IEnumerable<Classroom> Classrooms()
         {
             using (var db = new XuejiContext())
@@ -110,6 +133,10 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 返回所有学期的
+        /// </summary>
+        /// <returns>返回类型IEnumerable<WeekArrangingName> 的所有学期列表</returns>
         public static IEnumerable<WeekArrangingName> WeekList()
         {
             using (var db = new XuejiContext())
@@ -125,6 +152,10 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 返回所有课程列表，并且按照星期排序
+        /// </summary>
+        /// <returns>返回类型IEnumerable<CoursesArrangingName>的所有课程</returns>
         public static IEnumerable<CoursesArrangingName> List()
         {
             using (var db = new XuejiContext())
@@ -159,6 +190,11 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 按照CoursesArrangingid查找一条课程信息
+        /// </summary>
+        /// <param name="id">类型 int，CoursesarrangingId</param>
+        /// <returns>返回CoursesArrangingName类型的一条数据</returns>
         public static CoursesArrangingName SingleCoursesArrangingNames(int id)
         {
             using (var db = new XuejiContext())
@@ -191,6 +227,11 @@ namespace vuexueji.DAL
 
         }
 
+        /// <summary>
+        /// 按照班级Id(classId)查找符合的所有课程信息
+        /// </summary>
+        /// <param name="id">类型 int，classesID</param>
+        /// <returns>返回类型IEnumerable<CoursesArrangingName>的对应班级id的所有课程信息</returns>
         public static IEnumerable<CoursesArrangingName> ClassesList(int id)
         {
             using (var db = new XuejiContext())

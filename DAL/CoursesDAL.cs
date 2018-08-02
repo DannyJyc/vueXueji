@@ -14,7 +14,10 @@ namespace vuexueji.DAL
         //        return single;
         //    }
         //}
-
+        /// <summary>
+        /// 返回课程（courses）的所有信息
+        /// </summary>
+        /// <returns>类型为IEnumerable<CoursesLecturer>的所有信息</returns>
         public static IEnumerable<CoursesLecturer> List()
         {
             using (var db = new XuejiContext())
@@ -32,6 +35,10 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 为课程（courses）新增一条记录
+        /// </summary>
+        /// <param name="co">类型Courses 以供新增记录</param>
         public static void Add(Courses co)
         {
             using (var db = new XuejiContext())
@@ -45,7 +52,10 @@ namespace vuexueji.DAL
                 db.SaveChanges();
             }
         }
-
+        /// <summary>
+        /// 为课程（courses）修改一条记录
+        /// </summary>
+        /// <param name="courses">类型Courses 中的Id供修改对应课程信息</param>
         public static void Edit(Courses courses)
         {
             using (var db = new XuejiContext())
@@ -60,7 +70,10 @@ namespace vuexueji.DAL
                 db.SaveChanges();
             }
         }
-
+        /// <summary>
+        /// 删除对应id的课程信息
+        /// </summary>
+        /// <param name="id">类型 int，CoursesID</param>
         public static void Del(int id)
         {
             using (var db = new XuejiContext())

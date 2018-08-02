@@ -6,6 +6,10 @@ namespace vuexueji.DAL
 {
     public class MajorsDal
     {
+        /// <summary>
+        /// 列出专业（major）的所有信息
+        /// </summary>
+        /// <returns>以类型IEnumerable<Majors>返回专业的所有信息</returns>
         public static IEnumerable<Majors> List()
         {
             using (var db = new XuejiContext())
@@ -15,6 +19,10 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 为专业（major）新增一条记录
+        /// </summary>
+        /// <param name="m">类型 Majors 供major新增记录</param>
         public static void Add(Majors m)
         {
             using (var db = new XuejiContext())
@@ -28,6 +36,10 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 为专业（major）修改一条记录
+        /// </summary>
+        /// <param name="majors">类型 Majors中的id 供major修改一条记录</param>
         public static void Edit(Majors majors)
         {
             using (var db = new XuejiContext())
@@ -38,6 +50,10 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 专业（major）删除一条记录
+        /// </summary>
+        /// <param name="id">类型 int，MajorId 删除对应专业记录</param>
         public static void Del(int id)
         {
             using (var db = new XuejiContext())

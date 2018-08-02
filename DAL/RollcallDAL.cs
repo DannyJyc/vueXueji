@@ -9,6 +9,11 @@ namespace vuexueji.DAL
 {
     public class RollcallDal
     {
+        /// <summary>
+        /// 返回对应rollcallid的学生状态
+        /// </summary>
+        /// <param name="id">类型 int，rollcallid</param>
+        /// <returns>对应rollcallid的学生状态（json字符串）</returns>
         public static string StringJson(int id)
         {
             using (var db = new XuejiContext())
@@ -18,6 +23,10 @@ namespace vuexueji.DAL
             }
         }
 
+        /// <summary>
+        /// 返回所有点名信息（rollcall）
+        /// </summary>
+        /// <returns>返回所有点名信息</returns>
         public static IEnumerable AllList()
         {
             var db = new XuejiContext();
@@ -27,6 +36,11 @@ namespace vuexueji.DAL
 
         }
 
+        /// <summary>
+        /// 返回对应课程（Coursesarrangingid）的所有点名信息
+        /// </summary>
+        /// <param name="id">类型int，coursesarrangingid</param>
+        /// <returns>返回类型IEnumerable<Rollcall>的所有点名信息</returns>
         public static IEnumerable<Rollcall> List(int id)
         {
             var db = new XuejiContext();
@@ -36,6 +50,11 @@ namespace vuexueji.DAL
             return list.ToList();
         }
 
+        /// <summary>
+        /// 修改对应rollcallID的学生状态
+        /// </summary>
+        /// <param name="studentState">类型 StudentState中id以供修改rollcall的学生状态</param>
+        /// <returns>返回字符串“1”为修改成功</returns>
         public static string EditStudentsStatus(StudentState studentState)
         {
             var name = studentState.StudentsId;
@@ -62,6 +81,13 @@ namespace vuexueji.DAL
             return "1";
         }
 
+        /// <summary>
+        /// 新增一条点名记录（rollcall）
+        /// </summary>
+        /// <param name="studentState">类型StudentState，学生状态</param>
+        /// <param name="id">类型 int，coursesarrangingId</param>
+        /// <param name="handlers">类型 string，操作者</param>
+        /// <returns>返回字符串“1”为修改成功</returns>
         public static string StudentsStatus(StudentState studentState, int id,string handlers)
         {
             var name = studentState.StudentsId;
@@ -94,12 +120,20 @@ namespace vuexueji.DAL
 
             return "1";
         }
-
+        /// <summary>
+        /// 出错的友好提示
+        /// </summary>
+        /// <returns>返回友好提示的字符串</returns>
         public static string ErroeWhenNull()
         {
             return "未找到指定对象！";
         }
 
+        /// <summary>
+        /// 列出对应Coursesarranging的所有学生
+        /// </summary>
+        /// <param name="id">类型 int，coursesarrangingId</param>
+        /// <returns>返回类型IEnumerable<StudentsRollcall> 的所有学生</returns>
         public static IEnumerable<StudentsRollcall> StudentsList(int id)
         {
             var db = new XuejiContext();
@@ -122,6 +156,11 @@ namespace vuexueji.DAL
             return null;
         }
 
+        /// <summary>
+        /// 返回对应coursesarrangingId的一条课程信息
+        /// </summary>
+        /// <param name="id">类型 int，CoursesarrangingId</param>
+        /// <returns>返回类型CoursesArrangingName的一条数据</returns>
         public static CoursesArrangingName SingleCoursesArranging(int id)
         {
             var db = new XuejiContext();
@@ -141,6 +180,11 @@ namespace vuexueji.DAL
             return list;
         }
 
+        /// <summary>
+        /// 显示讲师当天所教的所有课程
+        /// </summary>
+        /// <param name="id">类型 int，LecturerId</param>
+        /// <returns>返回类型IEnumerable<CoursesArrangingName>的所有课程信息</returns>
         public static IEnumerable<CoursesArrangingName> LeList(int id)
         {
             string[] weekdays = { "7", "1", "2", "3", "4", "5", "6" };
